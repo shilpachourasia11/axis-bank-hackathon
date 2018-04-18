@@ -1,8 +1,7 @@
 import React from 'react';
 import {saveImage,reset,getJobTypes} from "./../../actions/homeActions";
 import {connect} from "react-redux";
-import ImageList from './../../components/imageList/imageList'
-import UltimatePaginationMaterialUi from '../../components/Table';
+
 import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -10,6 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import $ from 'jquery'
+import Camera from 'react-camera';
 
 class App extends React.Component{
 	constructor(props) {
@@ -85,124 +85,67 @@ class App extends React.Component{
 		this.props.saveImage(data)
 	}
 
-	getSearchText = (e, text) => {
-		this.setState({
-			search: text
-		}, () => {
-			setTimeout(this.search(this.state.search), 5000)
-		})
-	}
-	search = (substring) => {
-		let allImages = this.state.images
-		let index
-		let newData = []
-		if(substring == ""){
-			this.setState({
-				images: JSON.parse(localStorage.getItem('images'))
-			})
-			return
-		}
-		for(index = 0; index < allImages.length; index ++){
-			if(allImages[index].imageUrl.text.includes(substring)){
-				newData.push(allImages[index])
-			}
-		}
-		this.setState({
-			images: newData
-		})
+	takePicture = () => {
+    this.camera.capture()
+    .then(blob => {
+      this.img.src = URL.createObjectURL(blob);
+      this.img.onload = () => { URL.revokeObjectURL(this.src); }
+    })
+  }
 
-	}
-	getURLText = (e, text) => {
-		this.setState({
-			imageFile: text
-		})
-	}
-	getText = (e, text) => {
-		this.setState({
-			imageText: text
-		})
-	}
 	render(){
-		const style = {
-			floatingButton: {
-				float: 'right',
-				marginTop: '-40px'
-			},
-			raisedButton: {
-				width: '50%'
-			},
-			hiddenButton: {
-				height:'0px',
-				overflow:'hidden'
-			},
-			vl: {
-				borderLeft: '1px solid black',
-	 			height: '95px',
-				float: 'right',
-				marginRight: '48%',
-    		marginTop: '-50px'
-			},
-			textUrl: {
-				marginLeft: '45px'
-			},
-			imageText: {
-				marginTop: '70px'
-			}
-		};
 		const actions = [
 		 <FlatButton
 			 label="Upload"
 			 primary={true}
 			 onClick={this.handleUpload}
 		 />,
-	 ];
+	 	];
+
+		const style = {
+		  preview: {
+		    position: 'relative',
+		  },
+		  captureContainer: {
+		    display: 'flex',
+		    position: 'absolute',
+		    justifyContent: 'center',
+		    zIndex: 1,
+		    bottom: 0,
+		    width: '100%'
+		  },
+		  captureButton: {
+		    backgroundColor: '#fff',
+		    borderRadius: '50%',
+		    height: 56,
+		    width: 56,
+		    color: '#000',
+		    margin: 20
+		  },
+		  captureImage: {
+		    width: '100%',
+		  }
+		};
+
 		return (
       <div>
-				<TextField
-		      hintText="Search Text"
-					onChange={this.getSearchText}
-		    /><br />
-				<FloatingActionButton mini={true} secondary={true} style={style.floatingButton} onClick={this.addImages}>
-		      <ContentAdd />
-		    </FloatingActionButton>
-        <ImageList list={this.state.images} loading={this.props.home.loading}/>
-
-
-				<Dialog
-        title="Add Photo"
-        actions={actions}
-        modal={false}
-        open={this.state.openPopUp}
-        onRequestClose={this.handleClose}
-      	>
-					<RaisedButton label="Choose file" labelPosition="before" onClick={this.chooseFile} style= {style.raisedButton}>
-					  <input id="files" type="file" style={style.hiddenButton} onChange={this.onFileLoad}/>
-					</RaisedButton>
-
-					<TextField
-						hintText="Image URL"
-						style={style.textUrl}
-						onChange={this.getURLText}
-					/>
-
-					<div style={style.vl}/>
-
-					<TextField
-						hintText="Image Text"
-						style={style.imageText}
-						onChange={this.getText}
-					/>
-
-      	</Dialog>
-
-				{/* <center>
-					<UltimatePaginationMaterialUi
-						currentPage={this.state.page}
-						totalPages={this.state.total}
-						onChange={this.onPageChange}
-					/>
-				</center> */}
-      </div>
+				<Camera
+          style={style.preview}
+          ref={(cam) => {
+            this.camera = cam;
+          }}
+        >
+				<div style={style.captureContainer} onClick={this.takePicture}>
+					 <div style={style.captureButton} />
+				 </div>
+			 </Camera>
+			 <img
+          style={style.captureImage}
+          ref={(img) => {
+            this.img = img;
+          }}
+        />
+			</div>
 		)
 	}
 }
