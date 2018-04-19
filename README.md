@@ -6,10 +6,6 @@ A minimal and light dev environment for ReactJS.
 ### Usage
 A simple Image uploader
 
-```
-git clone git@github.com:nolotz/react-simple-boilerplate.git
-```
-
 Install the dependencies and start the server.
 
 ```
