@@ -1,24 +1,24 @@
-from index import db, bcrypt
+import sqlite3 as sql
 
+def insert_user(email, password):
+    con = sql.connect("database.db")
+    cur = con.cursor()
+    cur.execute("INSERT INTO user (email, password) VALUES (?,?)", (email, password))
+    con.commit()
+    con.close()
 
-class User(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
+def select_account_holder(params=()):
+    con = sql.connect("database.db")
+        # cur = con.cursor()
+        # if params==():
+        #     cur.execute("select * from account_holder")
+        # else:
+        #     string = "select"
+        #     for i in xrange(len(params)-1):
+        #         string += "%s,"
+        #     string += "%s"
+        #     string += " from account_holder"
 
-    def __init__(self, email, password):
-        self.email = email
-        self.active = True
-        self.password = User.hashed_password(password)
-
-    @staticmethod
-    def hashed_password(password):
-        return bcrypt.generate_password_hash(password).decode("utf-8")
-
-    @staticmethod
-    def get_user_with_email_and_password(email, password):
-        user = User.query.filter_by(email=email).first()
-        if user and bcrypt.check_password_hash(user.password, password):
-            return user
-        else:
-            return None
+        #     result = cur.execute(string)
+    con.close()
+        #     return result.fetchall()
