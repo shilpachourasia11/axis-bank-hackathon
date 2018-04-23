@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
-
+import Home from './../containers/HomeContainer/Home.js'
 import * as actionCreators from '../actions/auth';
 
 import { validateEmail } from '../utils/misc';
@@ -115,47 +115,8 @@ export default class RegisterView extends React.Component {
 
     render() {
         return (
-            <div className="col-md-6 col-md-offset-3" onKeyPress={(e) => this._handleKeyPress(e)}>
-                <Paper style={style}>
-                    <div className="text-center">
-                        <h2>Register to view protected content!</h2>
-                        {
-                            this.props.registerStatusText &&
-                                <div className="alert alert-info">
-                                    {this.props.registerStatusText}
-                                </div>
-                        }
+                    <Home type="register"/>
 
-                        <div className="col-md-12">
-                            <TextField
-                              hintText="Email"
-                              floatingLabelText="Email"
-                              type="email"
-                              errorText={this.state.email_error_text}
-                              onChange={(e) => this.changeValue(e, 'email')}
-                            />
-                        </div>
-                        <div className="col-md-12">
-                            <TextField
-                              hintText="Password"
-                              floatingLabelText="Password"
-                              type="password"
-                              errorText={this.state.password_error_text}
-                              onChange={(e) => this.changeValue(e, 'password')}
-                            />
-                        </div>
-
-                        <RaisedButton
-                          disabled={this.state.disabled}
-                          style={{ marginTop: 50 }}
-                          label="Submit"
-                          onClick={(e) => this.login(e)}
-                        />
-
-                    </div>
-                </Paper>
-
-            </div>
         );
 
     }

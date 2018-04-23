@@ -21,18 +21,12 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <section>
                     <Header />
-                    <div  style={{height: '59%'}}>
-                      <Home/>
-                    </div>
-                    {/* <div
-                      className="container"
-                      style={{ marginTop: 10, paddingBottom: 250 }}
+                    <div
+                      className=""
+                      style={{ height: '59%' }}
                     >
-                        {this.props.children}
+                      {this.props.children}
                     </div>
-                    <div>
-
-                    </div> */}
                 </section>
             </MuiThemeProvider>
         );

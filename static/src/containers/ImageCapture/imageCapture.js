@@ -174,6 +174,7 @@ class ImageCapture extends React.Component{
 						:
 						<Paper style={stylePic} zDepth={5} />
 					}
+					
 					<Camera
 	          style={style.preview}
 	          ref={(cam) => {
