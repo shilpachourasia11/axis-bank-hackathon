@@ -1,5 +1,5 @@
 import React from 'react';
-import { saveImgage, reset } from "./../../actions/cameraActions";
+import { saveUserData } from "./../../actions/homeActions";
 import {connect} from "react-redux";
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
@@ -25,9 +25,10 @@ class ImageCapture extends React.Component{
 			imageText: null,
 			search: null,
       activeStep: '0',
-			image1: false,
-			image2: false,
-			image3: false
+			image1: null,
+			image2: null,
+			image3: null,
+			key: 1
 		}
 	}
 
@@ -42,68 +43,18 @@ class ImageCapture extends React.Component{
 		}
 	}
 
-	onPageChange = (page) => {
-		this.setState({page});
-		let serverObj = {
-			page: (page-1)
-		}
-		if(this.state.value != 0){
-			serverObj.jobType = this.state.value
-		}
-		this.props.saveImage(serverObj)
-	}
-
-	componentWillMount() {
-	}
-
-	addImages = (event) => {
-		this.setState({
-			openPopUp: true
-		})
-	}
-
-	handleClose = (event) => {
-		this.setState({
-			openPopUp: false
-		})
-	}
-
-	chooseFile = () => {
-		$("#files").click();
-	}
-
-	onFileLoad = (event )=> {
-		var input = event.target;
-		var reader = new FileReader();
-		var that = this
-		reader.onload = function(){
-      var dataURL = reader.result;
-			that.setState({
-				imageFile: dataURL
-			})
-    };
-    reader.readAsDataURL(input.files[0])
-	}
-
-	handleUpload = () => {
-		let data = {
-			text: this.state.imageText,
-			imageUrl: this.state.imageFile,
-		}
-		this.props.saveImage(data)
-	}
-
 	takePicture = () => {
     this.camera.capture()
     .then(blob => {
+			let userData = this.props.home.userData;
+			let key = this.state.key;
+			let imgKey = 'image' + key;
+			userData[imgKey] = blob;
 			this.setState({
-				[this.props.camera.profile] : URL.createObjectURL(blob)
-			})
-			this.props.saveImage({
-				url: URL.createObjectURL(blob),
-				profile: this.props.camera.profile
-			})
-      this.img.onload = () => { URL.revokeObjectURL(this.src); }
+				[imgKey] : URL.createObjectURL(blob),
+				key: key + 1
+			});
+			this.props.saveUserData(userData)
     })
   }
 
@@ -112,13 +63,6 @@ class ImageCapture extends React.Component{
   }
 
 	render(){
-		const actions = [
-		 <FlatButton
-			 label="Upload"
-			 primary={true}
-			 onClick={this.handleUpload}
-		 />,
-	 	];
 
 		const style = {
 		  preview: {
@@ -152,29 +96,35 @@ class ImageCapture extends React.Component{
       textAlign: 'center',
       display: 'inline-block',
     };
+
+		const imgStyle = {
+			height: 100,
+      width: 100,
+      margin: 15
+		}
 		return (
       <div>
         <Paper zDepth={2}>
           <Divider />
 					{
 						this.state.image1 ?
-						<img/>
+						<img  style={imgStyle} src={this.state.image1}/>
 						:
-						<Paper style={stylePic} zDepth={5} />
+						<Paper style={stylePic} zDepth={4} />
 					}
 					{
 						this.state.image2 ?
-						<img/>
+						<img style={imgStyle} src={this.state.image2}/>
 						:
-						<Paper style={stylePic} zDepth={5} />
+						<Paper style={stylePic} zDepth={4} />
 					}
 					{
 						this.state.image3 ?
-						<img/>
+						<img style={imgStyle} src={this.state.image3}/>
 						:
-						<Paper style={stylePic} zDepth={5} />
+						<Paper style={stylePic} zDepth={4} />
 					}
-					
+
 					<Camera
 	          style={style.preview}
 	          ref={(cam) => {
@@ -182,8 +132,8 @@ class ImageCapture extends React.Component{
 	          }}
 	        >
 					<div style={style.captureContainer} onClick={this.takePicture}>
-						 <div style={style.captureButton} />
-					 </div>
+					 <div style={style.captureButton} />
+				 	</div>
 				 </Camera>
         </Paper>
       </div>
@@ -193,20 +143,16 @@ class ImageCapture extends React.Component{
 
 const mapStateToProps= (state) => {
 	return{
-		home: state.homeReducer,
-		camera: state.cameraReducer
+		home: state.homeReducer
 	};
 };
 
 const mapDispatchToProps= (dispatch) => {
 	return{
-		saveImage: (data) => {
-			dispatch(saveImage(data))
-		},
-		reset: () => {
-			dispatch(reset())
+    saveUserData: (data) => {
+			dispatch(saveUserData(data))
 		}
-	};
+  }
 };
 
 

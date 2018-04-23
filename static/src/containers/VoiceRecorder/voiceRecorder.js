@@ -1,5 +1,7 @@
 import React from 'react';
-import {saveImage} from "./../../actions/homeActions";
+import { saveUserData } from "./../../actions/homeActions";
+import { sendAUdio, reset } from "./../../actions/recorderActions";
+
 import {connect} from "react-redux";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
@@ -27,12 +29,25 @@ class VoiceRecorder extends React.Component{
     });
   }
 
-  onData(recordedBlob) {
+  onData = (recordedBlob) => {
     console.log('chunk of real-time data is: ', recordedBlob);
+		this.setState({
+			recordedBlob
+		});
   }
 
-  onStop(recordedBlob) {
+  onStop = (recordedBlob)  => {
     console.log('recordedBlob is: ', recordedBlob);
+		this.setState({
+			recordedBlob
+		});
+
+		let userData = this.props.home.userData;
+
+		userData['audioClip'] = recordedBlob;
+
+		this.props.saveUserData(userData)
+
   }
 
 
@@ -63,11 +78,12 @@ const mapStateToProps= (state) => {
 	};
 };
 
+
 const mapDispatchToProps= (dispatch) => {
 	return{
-    saveImage: (data) => {
-			dispatch(saveImage(data))
-		},
+    saveUserData: (data) => {
+			dispatch(saveUserData(data))
+		}
   }
 };
 

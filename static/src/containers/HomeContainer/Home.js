@@ -1,11 +1,11 @@
 import React from 'react';
-import {saveImage,reset,getJobTypes} from "./../../actions/homeActions";
 import {connect} from "react-redux";
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Header } from '../../components/Header';
+import { verify } from "./../../actions/homeActions";
 
 import ImageCapture from './../ImageCapture/imageCapture.js';
 import VoiceRecorder from './../VoiceRecorder/voiceRecorder.js';
@@ -25,11 +25,12 @@ class Home extends React.Component{
 		}
 	}
 
-  handleActive = () => {
-
-  }
-
 	handleChange = (value) => {
+		if(value === "2"){
+			if(this.props.type !== 'register'){
+				this.props.verify(this.props.home.userData);
+			}
+		}
     this.setState({
       value: value,
     });
@@ -45,14 +46,14 @@ class Home extends React.Component{
         	onChange={this.handleChange}
 				>
           <Tab label="Capture Image" value='0'>
-            <ImageCapture imageCount={this.props.type? 5 : 3}/>
+            <ImageCapture imageCount={this.props.type? 5 : 3} type={this.props.type}/>
           </Tab>
           <Tab label="Voice Recognition" value='1'>
-						<VoiceRecorder/>
+						<VoiceRecorder type={this.props.type}/>
           </Tab>
           <Tab
-            label="Verification" value='2'>
-						<VerifyScreen/>
+            label={this.props.type ? "User Data": "Verification"} value='2'>
+						<VerifyScreen label={this.props.type ? "User Data": "Verification"}/>
           </Tab>
         </Tabs>
 				</div>
@@ -68,6 +69,9 @@ const mapStateToProps= (state) => {
 
 const mapDispatchToProps= (dispatch) => {
 	return{
+		verify: (data) => {
+			dispatch(verify(data))
+		}
   }
 };
 
