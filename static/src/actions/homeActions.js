@@ -8,16 +8,17 @@ function dataDispatch(data, actionType) {
   };
 }
 
-function error(e){
-  return {
-    type: types.ERROR_CAMERA
-  };
-}
-
 export function reset(){
   return {
     type: types.RESET
   }
+}
+
+function handlError(e){
+  return {
+    type: types.ERROR,
+    payload: e
+  };
 }
 
 export function saveUserData(data){
@@ -41,7 +42,7 @@ export const verify = (data) => {
       dispatch(dataDispatch(response.data, types.VERIFY));
     })
     .catch(function (error) {
-      console.log(error);
+      dispatch(handlError(error));
     });
   };
 }
@@ -60,7 +61,7 @@ export const sendData = (data) => {
       dispatch(dataDispatch(response.data, types.ADD_TO_DB));
     })
     .catch(function (error) {
-      console.log(error);
+      dispatch(handlError(error));
     });
   };
 }
