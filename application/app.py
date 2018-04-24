@@ -31,11 +31,12 @@ def saveData():
         'image2': data['image2'].rsplit("base64,")[1],
         'image3': data['image3'].rsplit("base64,")[1]
     }
-    
+    audioClip = data['audioClip'].rsplit("base64,")[1]
     if act.checkUniqueness(data['adhar']):
         res1 = act.save_details(data)
         res2  = act.convert_and_save(img, data['adhar'])
-        if res1 and res2:
+        res3 = act.saveAudioClip(audioClip, data['adhar'])
+        if res1 and res2 and res3:
             print("Data got successfully saved!")
             return jsonify({'type' : 'success', 'messgae': 'Data got successfully saved!'})
         else:
@@ -45,5 +46,9 @@ def saveData():
         return jsonify({'type' : 'error', 'messgae': 'Aadhar card number already exists!'})
     
 
-# if __name__ == "__main__":
-#     app.run()
+@app.route("'/verify_user'", methods=["POST"])
+def verify_user():
+    data = request.get_json()
+    print(data)
+
+

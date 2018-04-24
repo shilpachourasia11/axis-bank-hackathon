@@ -62,7 +62,7 @@ class Actions():
 			return False
 	
 	@classmethod
-	def saveImage(self, b64_string, path):
+	def save(self, b64_string, path):
 		with open(path, "wb") as fh:
 			fh.write(base64.decodebytes(b64_string.encode()))	
 
@@ -70,9 +70,20 @@ class Actions():
 	def convert_and_save(self, img, folderName):
 		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
 		try:
-			Actions.saveImage(img['image1'], path + "img1.png")
-			Actions.saveImage(img['image2'], path + "img2.png")
-			Actions.saveImage(img['image3'], path + "img3.png")
+			Actions.save(img['image1'], path + "img1.png")
+			Actions.save(img['image2'], path + "img2.png")
+			Actions.save(img['image3'], path + "img3.png")
+			return True
+		except Exception as e:
+			print(e)
+			return False
+
+
+	@classmethod
+	def saveAudioClip(self, audio, folderName):
+		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
+		try:
+			Actions.save(audio, path + "audioClip.webm")
 			return True
 		except Exception as e:
 			print(e)
