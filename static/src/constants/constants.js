@@ -7,5 +7,5 @@ export const ERROR_RECORDER = 'ERROR_RECORDER'
 
 export const VERIFY = 'VERIFY'
 export const SAVE_DATA = 'SAVE_DATA'
-export const BASE_URL = ''
+export const BASE_URL = 'http://127.0.0.1:5000'
 export const ADD_TO_DB = 'ADD_TO_DB'
