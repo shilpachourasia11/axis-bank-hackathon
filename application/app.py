@@ -24,17 +24,26 @@ def index():
 @app.route("/saveData", methods=["POST"])
 def saveData():
     data = request.get_json()
-    print(data)
+    # sprint(data)
     print(data['adhar'])
-    if act.checkUniqueness(data['adhar']):
-        res = act.save_details(data)
-        if res:
-            print("Data got successfully saved!")
-        return jsonify({'success': 'Details got successfully saved!'})
-    else:
-        return jsonify({'error': 'Aadhar card number already exists!'})
+    img = {
+        'image1': data['image1'].rsplit("base64,")[1],
+        'image2': data['image2'].rsplit("base64,")[1],
+        'image3': data['image3'].rsplit("base64,")[1]
+    }
     
-
+    if act.checkUniqueness(data['adhar']):
+        res1 = act.save_details(data)
+        res2  = act.convert_and_save(img, data['adhar'])
+        if res1 and res2:
+            print("Data got successfully saved!")
+            return jsonify({'type' : 'success', 'messgae': 'Data got successfully saved!'})
+        else:
+            return jsonify({'type' : 'error', 'messgae': 'One of the data is not saved!'})
+    else:
+        print("already exists!")
+        return jsonify({'type' : 'error', 'messgae': 'Aadhar card number already exists!'})
+    
 
 # if __name__ == "__main__":
 #     app.run()
