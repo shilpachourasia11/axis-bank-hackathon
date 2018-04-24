@@ -49,7 +49,7 @@ export const verify = (data) => {
 export const sendData = (data) => {
   return (dispatch) => {
 
-    const path = types.BASE_URL + '/build_list/create_list';
+    const path = types.BASE_URL + '/saveData';
 
     axios({
       method: 'post',
