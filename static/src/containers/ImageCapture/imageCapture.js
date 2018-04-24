@@ -46,21 +46,31 @@ class ImageCapture extends React.Component{
 	takePicture = () => {
     this.camera.capture()
     .then(blob => {
-			let userData = this.props.home.userData;
 			let key = this.state.key;
 			let imgKey = 'image' + key;
-			userData[imgKey] = blob;
 			this.setState({
-				[imgKey] : URL.createObjectURL(blob),
-				key: key + 1
+				[imgKey] : URL.createObjectURL(blob)
 			});
-			this.props.saveUserData(userData)
+			this.convertImageFormat(blob)
     })
   }
 
-  handleActive = () => {
-
-  }
+	convertImageFormat = (blob)=> {
+		let reader = new FileReader();
+		reader.readAsDataURL(blob);
+		var that = this;
+		reader.onloadend = function() {
+    	let base64data = reader.result;
+			let key = that.state.key;
+			let userData = that.props.home.userData;
+			let imgKey = 'image' + key;
+			userData[imgKey] = base64data;
+			that.props.saveUserData(userData);
+			that.setState({
+				key: key + 1
+			});
+ 		}
+	}
 
 	render(){
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {sendData, saveUserData} from "./../../actions/homeActions";
+import {sendData, saveUserData 	} from "./../../actions/homeActions";
 import {connect} from "react-redux";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
@@ -32,6 +32,7 @@ class VerifyScreen extends React.Component{
 	}
 
 	submit = () => {
+		console.log(this.props.home.userData)
 		this.props.sendData(this.props.home.userData);
 	}
 

@@ -41,14 +41,20 @@ class VoiceRecorder extends React.Component{
 		this.setState({
 			recordedBlob
 		});
-
-		let userData = this.props.home.userData;
-
-		userData['audioClip'] = recordedBlob;
-
-		this.props.saveUserData(userData)
-
+		this.convertClipFormat(recordedBlob);
   }
+
+	convertClipFormat = (blob)=> {
+		let reader = new FileReader();
+		reader.readAsDataURL(blob);
+		var that = this;
+		reader.onloadend = function() {
+    	let base64data = reader.result;
+			let userData = that.props.home.userData;
+			userData['audioClip'] = base64data;
+			that.props.saveUserData(userData);
+ 		}
+	}
 
 
 	render(){
