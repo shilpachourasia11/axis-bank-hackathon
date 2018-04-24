@@ -1,12 +1,11 @@
 import React from 'react';
-import { saveUserData } from "./../../actions/homeActions";
-import { sendAUdio, reset } from "./../../actions/recorderActions";
-
+import { saveUserData, reset } from "./../../actions/homeActions";
 import {connect} from "react-redux";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import { ReactMic } from 'react-mic';
+import Snackbar from 'material-ui/Snackbar';
 
 class VoiceRecorder extends React.Component{
 	constructor(props) {
@@ -46,7 +45,7 @@ class VoiceRecorder extends React.Component{
 
 	convertClipFormat = (blob)=> {
 		let reader = new FileReader();
-		reader.readAsDataURL(blob);
+		reader.readAsDataURL(blob.blob);
 		var that = this;
 		reader.onloadend = function() {
     	let base64data = reader.result;
@@ -56,6 +55,9 @@ class VoiceRecorder extends React.Component{
  		}
 	}
 
+	handleRequestClose = () => {
+		this.props.reset();
+	}
 
 	render(){
 		return (
@@ -72,6 +74,12 @@ class VoiceRecorder extends React.Component{
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
             <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
           </center>
+					<Snackbar
+						open={this.props.home.error}
+						message={this.props.home.message}
+						autoHideDuration={4000}
+						onRequestClose={this.handleRequestClose}
+					/>
         </Paper>
       </div>
 		)
@@ -89,7 +97,10 @@ const mapDispatchToProps= (dispatch) => {
 	return{
     saveUserData: (data) => {
 			dispatch(saveUserData(data))
-		}
+		},
+		reset: () => {
+			dispatch(reset())
+		},
   }
 };
 
