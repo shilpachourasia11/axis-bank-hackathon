@@ -64,7 +64,7 @@ def verify_user():
         dir_user = main(img)
         audio_file = "/home/prakash/ubuntu/test.wav"
         res = obj.test(audio_file)
-        if dir_user :
+        if dir_user == res:
             # ("USER:",dir_user)
             res = act.getUserData(dir_user)
             # (res)

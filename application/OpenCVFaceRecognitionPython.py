@@ -58,8 +58,9 @@ def prepare_training_data(data_folder_path):
 
     #let's go through each directory and read images within it
     for dir_name in dirs:
-        try:
-            # (dir_name)
+        dir_path = os.path.join(data_folder_path, dir_name)
+        if os.path.isdir(dir_path):
+            # print(dir_name)
             subject_dir_path = data_folder_path + "/" + dir_name
             #get the images names that are inside the given subject directory
             subject_images_names = os.listdir(subject_dir_path)
@@ -89,7 +90,7 @@ def prepare_training_data(data_folder_path):
                     faces.append(face)
                     #add label for this face
                     labels.append(dir_name)
-        except:
+        else:
             continue
 
     return faces, labels
@@ -183,13 +184,13 @@ def main(frame):
 
         #display both images
         if int(confidence)>=30:
-            print("USER:",label)
+            # print("USER:",label)
             return label
         else:
-            # ("Cant Recognize you....")
-            # ("CONFIDENCE:",confidence)
+            # print("Cant Recognize you....")
+            # print("CONFIDENCE:",confidence)
             return 1
     except Exception as e:
-        # ("Can't Identify you.....")
-        # (e)
+        # print("Can't Identify you.....")
+        # print(e)
         return 1
