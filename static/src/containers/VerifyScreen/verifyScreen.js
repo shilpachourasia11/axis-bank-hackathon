@@ -223,7 +223,7 @@ class VerifyScreen extends React.Component{
       <div style={{backgroundColor: 'black', height: '138%'}}>
         <Paper zDepth={2} style={{height: '100%'}}>
 					{
-						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 ?
+						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
 						"Loading..."
 						:
 							this.props.label !== "User Data" ?
@@ -255,7 +255,8 @@ class VerifyScreen extends React.Component{
 								}
 							</center>)
 							:
-							(<center>
+							(
+								<center>
 								<TextField
 									floatingLabelText="Name"
 									onChange={(e) => this.getTextInput( e,"firstName")}
