@@ -24,8 +24,8 @@ class Actions():
 	@classmethod
 	def save_details(self, data):
 	    try:
-	        header = ['firstName', 'lastName', 'email', 'aadharno', 'phoneno', 'address']
-	        line = [data['firstName'], data['lastName'], data['email'], data['adhar'], data['phno'], data['address']]
+	        header = ['firstName', 'email', 'aadharno', 'phoneno', 'address']
+	        line = [data['firstName'], data['email'], data['adhar'], data['phno'], data['address']]
 	        save_folder = "/home/prakash/ubuntu/database/"+  "{}/details.csv".format(data['adhar'])
 	         # Create parent folders if they are not present
 	        Helper.create_parent_folders_for_file(save_folder)
@@ -85,7 +85,7 @@ class Actions():
 	def saveAudioClip(self, audio, folderName):
 		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
 		try:
-			Actions.save(audio, path + "audioClip.webm")
+			Actions.save(audio, path + "audioClip.wav")
 			return True
 		except Exception as e:
 			print(e)
@@ -111,11 +111,11 @@ class Actions():
 			print(reader)
 			csv_file.close()
 			data = {
-				"Name": reader[0] + " " + reader[1],
-				"Email address": reader[2],
-				"Aadhar Card Number": reader[3],
-				"Address": reader[5],
-				"Phone Number": reader[4]
+				"Name": reader[0],
+				"Email ID": reader[1],
+				"Aadhar Card Number": reader[2],
+				"Address": reader[4],
+				"Phone Number": reader[3]
 			}
 			return simplejson.dumps(data,indent=4, sort_keys=False)
 		except Exception as e:

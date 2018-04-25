@@ -42,7 +42,7 @@ def saveData():
             print("Data got successfully saved!")
             return jsonify({'type' : 'success', 'messgae': 'Data got successfully saved!'})
         else:
-            return jsonify({'type' : 'error', 'messgae': 'One of the data is not saved!'})
+            return jsonify({'type' : 'error', 'messgae': 'Missing information!'})
     else:
         print("already exists!")
         return jsonify({'type' : 'error', 'messgae': 'Aadhar card number already exists!'})
@@ -60,9 +60,9 @@ def verify_user():
             print(res)
             return jsonify({'type' : 'success', 'messgae': res})
         else:
-            return jsonify({'type' : 'error', 'messgae': "User doesn't exist!"})
+            return jsonify({'type' : 'error', 'messgae': "Can't identify you!"})
     except Exception as e:
         print(e)
-        return jsonify({'type' : 'error', 'messgae': "User doesn't exist!"})
+        return jsonify({'type' : 'error', 'messgae': "Can't identify you!"})
 
 
