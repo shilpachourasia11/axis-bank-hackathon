@@ -12,13 +12,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import $ from 'jquery'
-import Camera from 'react-camera';
 import './imgCapture.scss';
+import Webcam from 'react-webcam';
+var b64toBlob = require('b64-to-blob');
 
 class ImageCapture extends React.Component{
 	constructor(props) {
 		super(props);
-		this.props = props;
 		this.state={
 			images: localStorage.getItem('images') ? JSON.parse(localStorage.getItem('images')) : [],
 			imageFile: null,
@@ -43,40 +43,83 @@ class ImageCapture extends React.Component{
 		}
 	}
 
-	takePicture = () => {
-    this.camera.capture()
-    .then(blob => {
-			let key = this.state.key;
-			let imgKey = 'image' + key;
-			this.setState({
-				[imgKey] : URL.createObjectURL(blob)
-			});
-			this.convertImageFormat(blob)
-    })
-  }
+	// takePicture = () => {
+	// 	console.log(this.camera)
+  //   this.camera.capture()
+  //   .then(blob => {
+	// 		let key = this.state.key;
+	// 		let imgKey = 'image' + key;
+	// 		this.setState({
+	// 			[imgKey] : URL.createObjectURL(blob)
+	// 		});
+	// 		this.convertImageFormat(blob)
+  //   })
+  // }
 
-	convertImageFormat = (blob)=> {
-		let reader = new FileReader();
-		reader.readAsDataURL(blob);
+	// convertImageFormat = (blob)=> {
+	// 	let reader = new FileReader();
+	// 	reader.readAsDataURL(blob);
+	// 	var that = this;
+	// 	reader.onloadend = function() {
+  //   	let base64data = reader.result;
+	// 		let key = that.state.key;
+	// 		let userData = that.props.home.userData;
+	// 		let imgKey = 'image' + key;
+	// 		userData[imgKey] = base64data;
+	// 		that.props.saveUserData(userData);
+	// 		that.setState({
+	// 			key: key + 1
+	// 		});
+ 	// 	}
+	// }
+
+	capture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+		let key = this.state.key;
+		let imgKey = 'image' + key;
+		let userData = this.props.home.userData;
+		userData[imgKey] = imageSrc;
+		this.props.saveUserData(userData);
+		this.setState({
+			key: key + 1
+		});
+
+		this.setState({
+			[imgKey] : imageSrc
+		});
+  };
+
+	chooseFile = () => {
+		$("#files").click();
+	}
+
+	onFileLoad = (event )=> {
+		var input = event.target;
+		var reader = new FileReader();
 		var that = this;
-		reader.onloadend = function() {
-    	let base64data = reader.result;
-			let key = that.state.key;
+		reader.onload = function(){
+      var dataURL = reader.result;
 			let userData = that.props.home.userData;
+			let key = that.state.key;
 			let imgKey = 'image' + key;
-			userData[imgKey] = base64data;
+			userData[imgKey] = dataURL;
 			that.props.saveUserData(userData);
 			that.setState({
-				key: key + 1
+				key: key + 1,
+				imageFile: dataURL,
+				[imgKey]: dataURL
+			}, () => {
+				console.log(this.state)
 			});
- 		}
+    };
+    reader.readAsDataURL(input.files[0]);
 	}
 
 	render(){
-
 		const style = {
 		  preview: {
-		    position: 'relative'
+		    position: 'relative',
+				marginLeft: '35%'
 		  },
 		  captureContainer: {
 		    display: 'flex',
@@ -96,13 +139,45 @@ class ImageCapture extends React.Component{
 		  },
 		  captureImage: {
 		    width: '100%',
-		  }
+		  },
+			floatingButton: {
+				float: 'right',
+				marginTop: '-40px'
+			},
+			raisedButton: {
+				width: '50%'
+			},
+			hiddenButton: {
+				height:'0px',
+				overflow:'hidden'
+			},
+			vl: {
+				borderLeft: '1px solid black',
+	 			height: '95px',
+				float: 'right',
+				marginRight: '48%',
+    		marginTop: '-50px'
+			},
+			textUrl: {
+				marginLeft: '45px'
+			},
+			imageText: {
+				marginTop: '70px'
+			}
 		};
 
+		const uploadStyle = {
+			height: 100,
+      width: 100,
+      marginLeft: 30,
+			marginTop: 20,
+			float: 'right',
+			marginRight: 50
+		}
     const stylePic = {
       height: 100,
       width: 100,
-      margin: 20,
+      marginLeft: 20,
       textAlign: 'center',
       display: 'inline-block',
     };
@@ -114,7 +189,6 @@ class ImageCapture extends React.Component{
 		}
 		return (
       <div>
-        <Paper zDepth={2}>
           <Divider />
 					{
 						this.state.image1 ?
@@ -134,18 +208,39 @@ class ImageCapture extends React.Component{
 						:
 						<Paper style={stylePic} zDepth={4} />
 					}
-
-					<Camera
-	          style={style.preview}
-	          ref={(cam) => {
-	            this.camera = cam;
-	          }}
-	        >
-					<div style={style.captureContainer} onClick={this.takePicture}>
-					 <div style={style.captureButton} />
-				 	</div>
-				 </Camera>
-        </Paper>
+					{
+						this.props.imageCount === 5 ?
+						this.state.image4 ?
+						<img style={imgStyle} src={this.state.image2}/>
+						:
+						<Paper style={stylePic} zDepth={4} />
+						: null
+					}
+					{
+						this.props.imageCount === 5 ?
+							<RaisedButton label="Upload" labelPosition="before" onClick={this.chooseFile} style= {uploadStyle}>
+								<input id="files" type="file" style={style.hiddenButton} onChange={this.onFileLoad}/>
+							</RaisedButton>
+						: null
+					}
+				 <div>
+				 <Webcam
+					 style={style.preview}
+					 audio={false}
+					 height={350}
+					 ref={this.setRef}
+					 screenshotFormat="image/jpeg"
+					 width={350}
+					 ref = {
+						 (webcam) => {
+							 this.webcam = webcam;
+						 }
+					 }
+				 />
+				 <div style={style.captureContainer} onClick={this.takePicture}>
+					<button style={style.captureButton} onClick={this.capture}><b>Capture</b></button>
+				 </div>
+			 	</div>
       </div>
 		)
 	}
@@ -166,4 +261,4 @@ const mapDispatchToProps= (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(  ImageCapture);
+export default connect(mapStateToProps, mapDispatchToProps)(ImageCapture);

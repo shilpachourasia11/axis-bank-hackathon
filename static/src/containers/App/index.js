@@ -23,7 +23,7 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
                     <Header />
                     <div
                       className=""
-                      style={{ height: '59%' }}
+                      style={{ height: '91%', backgroundColor: '#303030' }}
                     >
                       {this.props.children}
                     </div>
