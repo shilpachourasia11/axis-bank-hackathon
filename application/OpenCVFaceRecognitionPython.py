@@ -127,7 +127,7 @@ def main(frame):
     #one list will contain all the faces
     #and other list will contain respective labels for each face
     print("Preparing data...")
-    faces, labels = prepare_training_data("/home/prakash/ubuntu/database")
+    faces, labels = prepare_training_data("/home/ubuntu/database")
     print("Data prepared")
     #format labels
     unique_labels = list(set(labels))
