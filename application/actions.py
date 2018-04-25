@@ -6,13 +6,14 @@ import numpy as np
 import base64
 import csv
 import cv2
+import os
 import simplejson
 
 
 class Actions():
 
 	def __init__(self):
-		self.database_path = "/home/ubuntu/database/"
+		self.database_path = "/home/prakash/ubuntu/database/"
 
 	# Pass the audio data to an encoding function.
 	@classmethod
@@ -26,7 +27,7 @@ class Actions():
 	    try:
 	        header = ['firstName', 'email', 'aadharno', 'phoneno', 'address']
 	        line = [data['firstName'], data['email'], data['adhar'], data['phno'], data['address']]
-	        save_folder = "/home/ubuntu/database/"+  "{}/details.csv".format(data['adhar'])
+	        save_folder = "/home/prakash/ubuntu/database/"+  "{}/details.csv".format(data['adhar'])
 	         # Create parent folders if they are not present
 	        Helper.create_parent_folders_for_file(save_folder)
 	        with open(save_folder,'w') as file:
@@ -42,7 +43,7 @@ class Actions():
 	def checkUniqueness(self, aadharNo):
 		try:
 			res = False
-			fileName = "/home/ubuntu/database/" + "uniqueIds.csv"
+			fileName = "/home/prakash/ubuntu/database/" + "uniqueIds.csv"
 			with open(fileName, 'r') as csv_file:
 				reader = csv.reader(csv_file)
 				uniqueIds = []
@@ -70,8 +71,15 @@ class Actions():
 			fh.write(base64.decodebytes(b64_string.encode()))	
 
 	@classmethod
+	def redifend_wav_file(self, fname, fpath, inp_file):
+		out_file = os.path.join(fpath, '%s.wav'%fname) 
+		cmd = "ffmpeg -y -i  %s -q:a 0  %s"%(inp_file, out_file)
+		os.system(cmd)
+		return 
+
+	@classmethod
 	def convert_and_save(self, img, folderName):
-		path = "/home/ubuntu/database/{}/".format(folderName)
+		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
 		try:
 			for k,v in img.items():
 				Actions.save(img[k], path + k + ".png")
@@ -83,9 +91,11 @@ class Actions():
 
 	@classmethod
 	def saveAudioClip(self, audio, folderName):
-		path = "/home/ubuntu/database/{}/".format(folderName)
+		path = "/home/prakash/ubuntu/database/{}".format(folderName)
+		fpath = path + "/" + folderName + ".webm"
 		try:
-			Actions.save(audio, path + "audioClip.wav")
+			Actions.save(audio, path + "/" + folderName + ".webm")
+			Actions.redifend_wav_file(folderName, path, fpath)
 			return True
 		except Exception as e:
 			print(e)
@@ -100,7 +110,7 @@ class Actions():
 
 	@classmethod
 	def getUserData(self, folderName):
-		path = "/home/ubuntu/database/{}/details.csv".format(folderName)
+		path = "/home/prakash/ubuntu/database/{}/details.csv".format(folderName)
 		try:
 			header = []
 			with open(path, 'r') as csv_file:

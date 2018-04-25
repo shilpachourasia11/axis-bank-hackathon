@@ -7,10 +7,12 @@ from flask_cors import CORS
 from flask import jsonify
 from .helper import Helper
 from .OpenCVFaceRecognitionPython import main
+from .Train_Model import Speaker_Recognization_Train 
 from .actions import Actions as act
 import base64
 import csv
 import cv2
+obj = Speaker_Recognization_Train()
 
 
 app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
@@ -36,33 +38,39 @@ def saveData():
     audioClip = data['audioClip'].rsplit("base64,")[1]
     if act.checkUniqueness(data['adhar']):
         res1 = act.save_details(data)
-        res2  = act.convert_and_save(img, data['adhar'])
+        res2 = act.convert_and_save(img, data['adhar'])
         res3 = act.saveAudioClip(audioClip, data['adhar'])
         if res1 and res2 and res3:
             print("Data got successfully saved!")
-            return jsonify({'type' : 'success', 'messgae': 'Data got successfully saved!'})
+            return jsonify({'type' : 'success', 'message': 'Data got successfully saved!'})
         else:
-            return jsonify({'type' : 'error', 'messgae': 'Missing information!'})
+            return jsonify({'type' : 'error', 'message': 'Missing information!'})
     else:
         print("already exists!")
-        return jsonify({'type' : 'error', 'messgae': 'Aadhar card number already exists!'})
+        return jsonify({'type' : 'error', 'message': 'Aadhar card number already exists!'})
     
 
 @app.route("/verify_user", methods=["POST"])
 def verify_user():
     data = request.get_json()
     # print(data)
-    try:
+    if 1:#try:
         img = act.data_uri_to_cv2_img(data['image1'])
+        audio = data['audioClip'].rsplit("base64,")[1]
+        audio_file = "/home/prakash/ubuntu/database/test.webm"
+        act.save(audio, audio_file)
+        act.redifend_wav_file("test", "/home/prakash/ubuntu/database", audio_file)
         dir_user = main(img)
+        audio_file = "/home/prakash/ubuntu/database/test.wav"
+        res = obj.process_basic(audio_file)
+        print(res)
         if dir_user != 1:
+            print("USER:",dir_user)
             res = act.getUserData(dir_user)
             print(res)
-            return jsonify({'type' : 'success', 'messgae': res})
+            return jsonify({'type' : 'success', 'message': res})
         else:
-            return jsonify({'type' : 'error', 'messgae': "Can't identify you!"})
-    except Exception as e:
+            return jsonify({'type' : 'error', 'message': "Can't identify you!"})
+    if 0:#except Exception as e:
         print(e)
-        return jsonify({'type' : 'error', 'messgae': "Can't identify you!"})
-
-
+        return jsonify({'type' : 'error', 'message': "Can't identify you!"})
