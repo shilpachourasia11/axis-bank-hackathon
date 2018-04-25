@@ -171,7 +171,8 @@ class ImageCapture extends React.Component{
       width: 100,
       marginLeft: 30,
 			marginTop: 20,
-			float: 'right'
+			float: 'right',
+			marginRight: 50
 		}
     const stylePic = {
       height: 100,

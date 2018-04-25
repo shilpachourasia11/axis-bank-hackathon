@@ -31,7 +31,7 @@ export default createReducer(initialState, {
       else{
         return Object.assign({}, state, {
           error: false,
-          message: payload.messgae,
+          message: payload.message,
           success: true
         });
       }
@@ -54,7 +54,7 @@ export default createReducer(initialState, {
       else{
         return Object.assign({}, state, {
           error: false,
-          verifiedData: JSON.parse(payload.messgae)
+          verifiedData: JSON.parse(payload.message)
         });
       }
     },
