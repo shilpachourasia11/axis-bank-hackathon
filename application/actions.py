@@ -36,7 +36,7 @@ class Actions():
 	            writer.writerow(line)
 	        return True
 	    except Exception as e:
-	        print(e)
+	        # (e)
 	        return False
 
 	@classmethod
@@ -50,11 +50,11 @@ class Actions():
 				for row in reader:
 					if len(row):
 						uniqueIds.append(str(row[0]))
-				print(uniqueIds)
+				# (uniqueIds)
 			csv_file.close()
 			with open(fileName, 'a') as csv_file:
 				lst = [str(aadharNo)]
-				print(lst)
+				# (lst)
 				if str(aadharNo) not in uniqueIds:
 					writer = csv.writer(csv_file)
 					writer.writerow(lst)
@@ -62,7 +62,7 @@ class Actions():
 				csv_file.close()
 			return res
 		except Exception as e:
-			print(e)
+			# (e)
 			return False
 	
 	@classmethod
@@ -85,7 +85,7 @@ class Actions():
 				Actions.save(img[k], path + k + ".png")
 			return True
 		except Exception as e:
-			print(e)
+			# (e)
 			return False
 
 
@@ -98,7 +98,7 @@ class Actions():
 			Actions.redifend_wav_file(folderName, path, fpath)
 			return True
 		except Exception as e:
-			print(e)
+			# (e)
 			return False
 
 	@classmethod
@@ -117,8 +117,8 @@ class Actions():
 				reader = csv.reader(csv_file)
 				header = next(reader)
 				reader = next(reader)
-			print(header)
-			print(reader)
+			# (header)
+			# (reader)
 			csv_file.close()
 			data = {
 				"Name": reader[0],
@@ -129,5 +129,5 @@ class Actions():
 			}
 			return simplejson.dumps(data,indent=4, sort_keys=False)
 		except Exception as e:
-			print(e)
+			# (e)
 			return False

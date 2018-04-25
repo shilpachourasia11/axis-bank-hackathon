@@ -47,10 +47,10 @@ def prepare_training_data(data_folder_path):
     #------STEP-1--------
     #get the directories (one directory for each subject) in data folder
     dirs = os.listdir(data_folder_path)
-    print(dirs)
+    # (dirs)
     # dirs.remove('uniqueIds.csv')
     # dirs.remove('test.wav')
-    print(dirs)
+    # (dirs)
     #list to hold all subject faces
     faces = []
     labels = []
@@ -59,7 +59,7 @@ def prepare_training_data(data_folder_path):
     #let's go through each directory and read images within it
     for dir_name in dirs:
         try:
-            print(dir_name)
+            # (dir_name)
             subject_dir_path = data_folder_path + "/" + dir_name
             #get the images names that are inside the given subject directory
             subject_images_names = os.listdir(subject_dir_path)
@@ -76,7 +76,7 @@ def prepare_training_data(data_folder_path):
                 #build image path
                 #sample image path = training-data/s1/1.pgm
                 image_path = subject_dir_path + "/" + image_name
-                print(image_path)
+                # (image_path)
                 #read image
                 image = cv2.imread(image_path)
                 #detect face
@@ -130,9 +130,9 @@ def main(frame):
     #data will be in two lists of same size
     #one list will contain all the faces
     #and other list will contain respective labels for each face
-    print("Preparing data...")
+    # ("Preparing data...")
     faces, labels = prepare_training_data("/home/prakash/ubuntu/database")
-    print("Data prepared")
+    # ("Data prepared")
     #format labels
     unique_labels = list(set(labels))
     count = 1
@@ -157,19 +157,19 @@ def main(frame):
 
     # In[10]:
 
-    # print("Predicting images...")
+    # # ("Predicting images...")
 
 
 
     # #load test images
     it = 1
     # while it<=20:
-    #         print("Taking Picture....")
+    #         # ("Taking Picture....")
     #         time.sleep(3)
     #         cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop)
     #         ret,frame = cap.read() # return a single frame in variable `frame`
     #         if frame is None or ret is None:
-    #             print("Error in capture Retrying...")
+    #             # ("Error in capture Retrying...")
     #             it = it + 1
     #         else:
     #             break
@@ -183,13 +183,13 @@ def main(frame):
 
         #display both images
         if int(confidence)>=30:
-            print("USER:",label)
+            # ("USER:",label)
             return label
         else:
-            print("Cant Recognize you....")
-            print("CONFIDENCE:",confidence)
+            # ("Cant Recognize you....")
+            # ("CONFIDENCE:",confidence)
             return 1
     except Exception as e:
-        print("Can't Identify you.....")
-        print(e)
+        # ("Can't Identify you.....")
+        # (e)
         return 1

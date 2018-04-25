@@ -28,8 +28,8 @@ def index():
 @app.route("/saveData", methods=["POST"])
 def saveData():
     data = request.get_json()
-    # sprint(data)
-    print(data['adhar'])
+    # s# (data)
+    # (data['adhar'])
     img = {}
     for k,v in data.items():
         if 'image' in k:
@@ -40,21 +40,22 @@ def saveData():
         res1 = act.save_details(data)
         res2 = act.convert_and_save(img, data['adhar'])
         res3 = act.saveAudioClip(audioClip, data['adhar'])
+        obj.train()
         if res1 and res2 and res3:
-            print("Data got successfully saved!")
+            # ("Data got successfully saved!")
             return jsonify({'type' : 'success', 'message': 'Data got successfully saved!'})
         else:
             return jsonify({'type' : 'error', 'message': 'Missing information!'})
     else:
-        print("already exists!")
+        # ("already exists!")
         return jsonify({'type' : 'error', 'message': 'Aadhar card number already exists!'})
     
 
 @app.route("/verify_user", methods=["POST"])
 def verify_user():
     data = request.get_json()
-    # print(data)
-    if 1:#try:
+    # # (data)
+    try:
         img = act.data_uri_to_cv2_img(data['image1'])
         audio = data['audioClip'].rsplit("base64,")[1]
         audio_file = "/home/prakash/ubuntu/database/test.webm"
@@ -62,15 +63,13 @@ def verify_user():
         act.redifend_wav_file("test", "/home/prakash/ubuntu/database", audio_file)
         dir_user = main(img)
         audio_file = "/home/prakash/ubuntu/database/test.wav"
-        res = obj.process_basic(audio_file)
-        print(res)
-        if dir_user != 1:
-            print("USER:",dir_user)
+        res = obj.test(audio_file)
+        if dir_user == res:
+            # ("USER:",dir_user)
             res = act.getUserData(dir_user)
-            print(res)
+            # (res)
             return jsonify({'type' : 'success', 'message': res})
         else:
             return jsonify({'type' : 'error', 'message': "Can't identify you!"})
-    if 0:#except Exception as e:
-        print(e)
+    except Exception as e:
         return jsonify({'type' : 'error', 'message': "Can't identify you!"})
