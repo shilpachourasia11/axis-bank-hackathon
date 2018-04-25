@@ -11,14 +11,15 @@ class Speaker_Recognization_Train(object):
  
     def train(self):
          
-        #os.system("rm -rf %s"%("speakers.txt"))
+        os.system("rm -rf %s"%("speakers.txt"))
          
-        #os.system("rm -rf %s"%("*.gzbin"))
+        os.system("rm -rf %s"%("*.gzbin"))
            
         data_folder_path = "/home/prakash/ubuntu/database"
         dirs = os.listdir(data_folder_path)
         res_arr = []  
         for folder in dirs:
+
                 file_path = os.path.join(data_folder_path, folder)
                 if not os.path.isdir(file_path):
                    continue   
@@ -29,7 +30,7 @@ class Speaker_Recognization_Train(object):
                 res_arr.append([f_name, new_path])
 
         for (f_name, fpath) in res_arr[:]:       
-            # ("training=====================", f_name, fpath)  
+            print("training=====================", f_name, fpath)  
             recog.speaker_name = f_name
             recog.train_new_data(fpath)
         return 
@@ -47,7 +48,7 @@ class Speaker_Recognization_Train(object):
         #  ("OIUT", dictn)
         res_arr = [(v, k) for k, v in dictn.items()]
         res_arr.sort()
-        # ("============== res_arr", res_arr)
+        print("============== res_arr", res_arr)
         if res_arr:
 
             return res_arr[0][1] 
@@ -57,5 +58,5 @@ class Speaker_Recognization_Train(object):
 if __name__ == '__main__':
     obj = Speaker_Recognization_Train()
     #obj.train()
-    res = obj.test("/home/prakash/ubuntu/database/jithin_johnson_123/jithin_johnson_123.wav")
+    res = obj.test("/home/prakash/ubuntu/test.wav")
     print(res) 

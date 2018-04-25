@@ -58,13 +58,13 @@ def verify_user():
     try:
         img = act.data_uri_to_cv2_img(data['image1'])
         audio = data['audioClip'].rsplit("base64,")[1]
-        audio_file = "/home/prakash/ubuntu/database/test.webm"
+        audio_file = "/home/prakash/ubuntu/test.webm"
         act.save(audio, audio_file)
-        act.redifend_wav_file("test", "/home/prakash/ubuntu/database", audio_file)
+        act.redifend_wav_file("test", "/home/prakash/ubuntu", audio_file)
         dir_user = main(img)
-        audio_file = "/home/prakash/ubuntu/database/test.wav"
+        audio_file = "/home/prakash/ubuntu/test.wav"
         res = obj.test(audio_file)
-        if dir_user == res:
+        if dir_user :
             # ("USER:",dir_user)
             res = act.getUserData(dir_user)
             # (res)

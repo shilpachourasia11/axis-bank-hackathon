@@ -183,7 +183,7 @@ def main(frame):
 
         #display both images
         if int(confidence)>=30:
-            # ("USER:",label)
+            print("USER:",label)
             return label
         else:
             # ("Cant Recognize you....")
