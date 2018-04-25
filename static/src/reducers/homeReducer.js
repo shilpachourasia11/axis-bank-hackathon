@@ -13,32 +13,58 @@ const initialState = {
     loaded: false,
     error: false,
     message: "",
-    userData: {}
+    userData: {},
+    success: false,
+    verifiedData: {}
 };
 
 export default createReducer(initialState, {
-    [ADD_TO_DB]: (state, payload) =>
-        Object.assign({}, state, {
-            data: payload.data,
-            loaded: true,
-            error: false,
-        }),
+    [ADD_TO_DB]: (state, payload) =>{
+      if(payload.type === 'error'){
+        return Object.assign({}, state, {
+          loaded: true,
+          error: true,
+          message: payload.message,
+          success: false
+        })
+      }
+      else{
+        return Object.assign({}, state, {
+          error: false,
+          message: payload.messgae,
+          success: true
+        });
+      }
+    },
     [ERROR]: (state, payload) =>
         Object.assign({}, state, {
             loaded: false,
             error: true,
+            message: "Unexpected error, Please try again."
         }),
-    [VERIFY]: (state, payload) =>
-        Object.assign({}, state, {
-            loaded: false,
-            error: false,
-        }),
+    [VERIFY]: (state, payload) => {
+      if(payload.type === 'error'){
+        return Object.assign({}, state, {
+          loaded: true,
+          error: true,
+          message: payload.message,
+          success: false
+        })
+      }
+      else{
+        return Object.assign({}, state, {
+          error: false,
+          verifiedData: JSON.parse(payload.messgae)
+        });
+      }
+    },
     [SAVE_DATA]: (state, payload) =>
         Object.assign({}, state, {
             userData: payload
         }),
     [RESET]: (state, payload) =>
         Object.assign({}, state, {
-            error: false
+            error: false,
+            success: false
         }),
 });

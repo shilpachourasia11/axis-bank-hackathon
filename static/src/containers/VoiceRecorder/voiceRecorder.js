@@ -5,7 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import { ReactMic } from 'react-mic';
-import Snackbar from 'material-ui/Snackbar';
 
 class VoiceRecorder extends React.Component{
 	constructor(props) {
@@ -29,14 +28,12 @@ class VoiceRecorder extends React.Component{
   }
 
   onData = (recordedBlob) => {
-    console.log('chunk of real-time data is: ', recordedBlob);
 		this.setState({
 			recordedBlob
 		});
   }
 
   onStop = (recordedBlob)  => {
-    console.log('recordedBlob is: ', recordedBlob);
 		this.setState({
 			recordedBlob
 		});
@@ -74,12 +71,6 @@ class VoiceRecorder extends React.Component{
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
             <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
           </center>
-					<Snackbar
-						open={this.props.home.error}
-						message={this.props.home.message}
-						autoHideDuration={4000}
-						onRequestClose={this.handleRequestClose}
-					/>
         </Paper>
       </div>
 		)
