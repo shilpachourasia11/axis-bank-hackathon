@@ -5,7 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Header } from '../../components/Header';
-import { verify } from "./../../actions/homeActions";
+import { verify, reset } from "./../../actions/homeActions";
 
 import ImageCapture from './../ImageCapture/imageCapture.js';
 import VoiceRecorder from './../VoiceRecorder/voiceRecorder.js';
@@ -21,21 +21,25 @@ class Home extends React.Component{
 			imageText: null,
 			search: null,
       activeStep: '0',
-      open: false
+      open: false,
+			value: "0"
 		}
 	}
 
 	handleChange = (value) => {
+		this.setState({
+			value: value,
+		});
+		this.props.reset();
 		if(value === "2"){
+			if(Object.keys(this.props.home.userData).length === 0){
+				return;
+			}
 			if(this.props.type !== 'register'){
 				this.props.verify(this.props.home.userData);
 			}
 		}
-    this.setState({
-      value: value,
-    });
   };
-
 
 	render(){
 		console.log(this.props)
@@ -53,7 +57,7 @@ class Home extends React.Component{
           </Tab>
           <Tab
             label={this.props.type ? "User Data": "Verification"} value='2'>
-						<VerifyScreen label={this.props.type ? "User Data": "Verification"}/>
+						<VerifyScreen value={this.state.value} label={this.props.type ? "User Data": "Verification"}/>
           </Tab>
         </Tabs>
 				</div>
@@ -71,6 +75,9 @@ const mapDispatchToProps= (dispatch) => {
 	return{
 		verify: (data) => {
 			dispatch(verify(data))
+		},
+		reset: () => {
+			dispatch(reset())
 		}
   }
 };

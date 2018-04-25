@@ -6,6 +6,9 @@ import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import { ReactMic } from 'react-mic';
 import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class VerifyScreen extends React.Component{
 	constructor(props) {
@@ -17,8 +20,70 @@ class VerifyScreen extends React.Component{
 			address: "",
 			adhar: "",
 			phno: "",
-			email: ""
+			email: "",
+			fnameError: "",
+			lnameError: "",
+			addrError: "",
+			cardError: "",
+			phError: "",
+			idError: "",
+			message: "",
+			error: false
     }
+	}
+
+	componentWillReceiveProps(nextProps){
+		this.props = nextProps;
+
+		if(this.props.value !== "2"){
+			return;
+		}
+		else{
+			let data = this.props.home.userData;
+			let imageCount = 0;
+			let audoCount = 0;
+			if(Object.keys(data).length === 0){
+				this.setState({
+					popup: true,
+					message: "Please capture atleast 3 images and 1 audio clip before proceeding."
+				});
+			}
+			else{
+				Object.keys(data).map((key, index)=>{
+					if(key === 'image1'){
+						imageCount++;
+					}
+					if(key === 'image2'){
+						imageCount++;
+					}
+					if(key === 'image3'){
+						imageCount++;
+					}
+					if(key === 'audioClip'){
+						audoCount ++;
+					}
+				})
+				if(imageCount !== 3){
+					this.setState({
+						popup: true,
+						message: "Please capture atleast 3 images."
+					});
+				}
+				else if(audoCount !== 1){
+					this.setState({
+						popup: true,
+						message: "Please record atleast 1 audio clip."
+					});
+				}
+				else{
+					this.setState({
+						popup: false,
+						message: ""
+					});
+				}
+			}
+
+		}
 	}
 
 	getTextInput = (e, type) => {
@@ -28,50 +93,220 @@ class VerifyScreen extends React.Component{
 
 		let userData = this.props.home.userData;
 		userData[type] = e.target.value;
-		this.props.saveUserData(userData)
+		this.props.saveUserData(userData);
 	}
 
 	submit = () => {
 		console.log(this.props.home.userData)
+		let data = this.props.home.userData;
+		let imageCount = 0;
+		let audoCount = 0;
+		if(Object.keys(data).length === 0){
+			this.setState({
+				popup: true,
+				message: "Please capture atleast 3 images and 1 audio clip before proceeding."
+			});
+			return;
+		}
+		else{
+			Object.keys(data).map((key, index)=>{
+				if(key === 'image1'){
+					imageCount++;
+				}
+				if(key === 'image2'){
+					imageCount++;
+				}
+				if(key === 'image3'){
+					imageCount++;
+				}
+				if(key === 'audioClip'){
+					audoCount ++;
+				}
+			})
+			if(imageCount !== 3){
+				this.setState({
+					popup: true,
+					message: "Please capture atleast 3 images."
+				});
+				return;
+			}
+			else if(audoCount !== 1){
+				this.setState({
+					popup: true,
+					message: "Please record atleast 1 audio clip."
+				});
+				return;
+			}
+			else{
+				this.setState({
+					popup: false,
+					message: ""
+				});
+			}
+		}
+
+		if(data.firstName === "" || data.firstName === undefined){
+			this.setState({
+				fnameError: "First Name Can not be empty"
+			});
+			return;
+		}
+		else{
+			this.setState({
+				fnameError: ""
+			});
+		}
+		if(data.address === "" || data.address === undefined){
+			this.setState({
+				addrError: "Address Can not be empty"
+			});
+			return;
+		}
+		else{
+			this.setState({
+				addrError: ""
+			});
+		}
+		if(data.adhar === "" || data.adhar === undefined){
+			this.setState({
+				cardError: "Adhaar number can not be empty"
+			});
+			return;
+		}
+		else{
+			this.setState({
+				cardError: ""
+			});
+		}
+		if(data.phno === "" || data.phno === undefined){
+			this.setState({
+				phError: "Phone number can not be empty"
+			});
+			return;
+		}
+		else{
+			this.setState({
+				phError: ""
+			});
+		}
+		if(data.email === "" || data.email === undefined){
+			this.setState({
+				idError: "Email ID can not be empty"
+			});
+			return;
+		}
+		else{
+			this.setState({
+				idError: ""
+			});
+		}
 		this.props.sendData(this.props.home.userData);
 	}
 
+
+  handleClose = () => {
+    this.setState({popup: false});
+  };
+
 	render(){
+		let verifiedData = this.props.home.verifiedData;
+
+		const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onClick={this.handleClose}
+      />
+    ];
+
 		return (
       <div style={{backgroundColor: 'black', height: '138%'}}>
         <Paper zDepth={2} style={{height: '100%'}}>
-          <center>
-					    <TextField
-					      floatingLabelText="First Name"
-								onChange={(e) => this.getTextInput( e,"firstName")}
-					    /><br />
-					    <TextField
-					      floatingLabelText="Last Name"
-								onChange={(e) => this.getTextInput( e,"lastName")}
-					    /><br />
-					    <TextField
-					      floatingLabelText="Address"
-								onChange={(e) => this.getTextInput( e,"address")}
-					    /><br />
-					    <TextField
-					      floatingLabelText="Adhaar Card Number"
-								onChange={(e) => this.getTextInput( e,"adhar")}
-					    /><br />
-					    <TextField
-					      floatingLabelText="Phone Number"
-								onChange={(e) => this.getTextInput( e,"phno")}
-					    /><br />
-					    <TextField
-					      floatingLabelText="Email ID"
-								onChange={(e) => this.getTextInput( e,"email")}
-					    /><br />
-							{
-								this.props.label === "User Data" ?
-								<RaisedButton label="Submit" onClick={this.submit} primary={true}/>
-								: null
-							}
-						</center>
+					{
+						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
+						"Loading..."
+						:
+							this.props.label !== "User Data" ?
+							(<center>
+								<TextField
+									floatingLabelText="Name"
+									value={verifiedData['Name']}
+								/><br />
+								<TextField
+									floatingLabelText="Address"
+									value={verifiedData['Address']}
+								/><br />
+								<TextField
+									floatingLabelText="Adhaar Card Number"
+									value={verifiedData['Aadhar Card Number']}
+								/><br />
+								<TextField
+									floatingLabelText="Phone Number"
+									value={verifiedData['Phone Number']}
+								/><br />
+								<TextField
+									floatingLabelText="Email ID"
+									value={verifiedData['Email ID']}
+								/><br />
+								{
+									this.props.label === "User Data" ?
+									<RaisedButton label="Submit" onClick={this.submit} primary={true}/>
+									: null
+								}
+							</center>)
+							:
+							(
+								<center>
+								<TextField
+									floatingLabelText="Name"
+									onChange={(e) => this.getTextInput( e,"firstName")}
+									errorText={this.state.fnameError}
+								/><br />
+								<TextField
+									floatingLabelText="Address"
+									onChange={(e) => this.getTextInput( e,"address")}
+									errorText={this.state.addrError}
+								/><br />
+								<TextField
+									floatingLabelText="Adhaar Card Number"
+									onChange={(e) => this.getTextInput( e,"adhar")}
+									errorText={this.state.cardError}
+								/><br />
+								<TextField
+									floatingLabelText="Phone Number"
+									onChange={(e) => this.getTextInput( e,"phno")}
+									errorText={this.state.phError}
+								/><br />
+								<TextField
+									floatingLabelText="Email ID"
+									onChange={(e) => this.getTextInput( e,"email")}
+									errorText={this.state.idError}
+								/><br />
+								{
+									this.props.label === "User Data" ?
+									<RaisedButton label="Submit" onClick={this.submit} primary={true}/>
+									: null
+								}
+							</center>)
+
+					}
+						<Snackbar
+							open={this.props.home.error || this.props.home.success}
+							message={this.props.home.message}
+							autoHideDuration={4000}
+							onRequestClose={this.handleRequestClose}
+						/>
         </Paper>
+
+				<Dialog
+          title="Error"
+          actions={actions}
+          modal={false}
+          open={this.state.popup}
+          onRequestClose={this.handleClose}
+        >
+          {this.state.message}
+        </Dialog>
       </div>
 		)
 	}
