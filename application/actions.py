@@ -12,7 +12,7 @@ import simplejson
 class Actions():
 
 	def __init__(self):
-		self.database_path = "/home/prakash/ubuntu/database/"
+		self.database_path = "/home/ubuntu/database/"
 
 	# Pass the audio data to an encoding function.
 	@classmethod
@@ -24,9 +24,9 @@ class Actions():
 	@classmethod
 	def save_details(self, data):
 	    try:
-	        header = ['firstName', 'lastName', 'email', 'aadharno', 'phoneno', 'address']
-	        line = [data['firstName'], data['lastName'], data['email'], data['adhar'], data['phno'], data['address']]
-	        save_folder = "/home/prakash/ubuntu/database/"+  "{}/details.csv".format(data['adhar'])
+	        header = ['firstName', 'email', 'aadharno', 'phoneno', 'address']
+	        line = [data['firstName'], data['email'], data['adhar'], data['phno'], data['address']]
+	        save_folder = "/home/ubuntu/database/"+  "{}/details.csv".format(data['adhar'])
 	         # Create parent folders if they are not present
 	        Helper.create_parent_folders_for_file(save_folder)
 	        with open(save_folder,'w') as file:
@@ -42,7 +42,7 @@ class Actions():
 	def checkUniqueness(self, aadharNo):
 		try:
 			res = False
-			fileName = "/home/prakash/ubuntu/database/" + "uniqueIds.csv"
+			fileName = "/home/ubuntu/database/" + "uniqueIds.csv"
 			with open(fileName, 'r') as csv_file:
 				reader = csv.reader(csv_file)
 				uniqueIds = []
@@ -71,7 +71,7 @@ class Actions():
 
 	@classmethod
 	def convert_and_save(self, img, folderName):
-		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
+		path = "/home/ubuntu/database/{}/".format(folderName)
 		try:
 			for k,v in img.items():
 				Actions.save(img[k], path + k + ".png")
@@ -83,9 +83,9 @@ class Actions():
 
 	@classmethod
 	def saveAudioClip(self, audio, folderName):
-		path = "/home/prakash/ubuntu/database/{}/".format(folderName)
+		path = "/home/ubuntu/database/{}/".format(folderName)
 		try:
-			Actions.save(audio, path + "audioClip.webm")
+			Actions.save(audio, path + "audioClip.wav")
 			return True
 		except Exception as e:
 			print(e)
@@ -100,7 +100,7 @@ class Actions():
 
 	@classmethod
 	def getUserData(self, folderName):
-		path = "/home/prakash/ubuntu/database/{}/details.csv".format(folderName)
+		path = "/home/ubuntu/database/{}/details.csv".format(folderName)
 		try:
 			header = []
 			with open(path, 'r') as csv_file:
@@ -111,11 +111,11 @@ class Actions():
 			print(reader)
 			csv_file.close()
 			data = {
-				"Name": reader[0] + " " + reader[1],
-				"Email address": reader[2],
-				"Aadhar Card Number": reader[3],
-				"Address": reader[5],
-				"Phone Number": reader[4]
+				"Name": reader[0],
+				"Email ID": reader[1],
+				"Aadhar Card Number": reader[2],
+				"Address": reader[4],
+				"Phone Number": reader[3]
 			}
 			return simplejson.dumps(data,indent=4, sort_keys=False)
 		except Exception as e:
