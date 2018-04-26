@@ -73,7 +73,7 @@ def verify_user():
         audio_file =  BASE_DIR+"/database/test_data/test.wav"
         print ("CALLING VOICE....")
         res = obj.test(audio_file)
-        if dir_user == res:
+        if dir_user==res:
             # ("USER:",dir_user)
             res = act.getUserData(dir_user,database_path)
             # (res)
