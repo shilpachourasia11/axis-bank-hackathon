@@ -59,6 +59,8 @@ def prepare_training_data(data_folder_path):
     #let's go through each directory and read images within it
     for dir_name in dirs:
         dir_path = os.path.join(data_folder_path, dir_name)
+        if "test_data" in dir_path:
+            continue
         if os.path.isdir(dir_path):
             # print(dir_name)
             subject_dir_path = data_folder_path + "/" + dir_name
@@ -126,13 +128,13 @@ def predict(test_img, label_dict,face_recognizer):
     return img, confidence,label_dict.get(label)
 
 # In[5]:
-def main(frame):
+def main(frame,BASEDIR):
     #let's first prepare our training data
     #data will be in two lists of same size
     #one list will contain all the faces
     #and other list will contain respective labels for each face
     # ("Preparing data...")
-    faces, labels = prepare_training_data("/home/prakash/ubuntu/database")
+    faces, labels = prepare_training_data(BASEDIR+"/database")
     # ("Data prepared")
     #format labels
     unique_labels = list(set(labels))
@@ -154,28 +156,6 @@ def main(frame):
     face_recognizer.train(faces,np.array(temp_labels))
 
 
-    # Now that we have the prediction function well defined, next step is to actually call this function on our test images and display those test images to see if our face recognizer correctly recognized them. So let's do it. This is what we have been waiting for.
-
-    # In[10]:
-
-    # # ("Predicting images...")
-
-
-
-    # #load test images
-    it = 1
-    # while it<=20:
-    #         # ("Taking Picture....")
-    #         time.sleep(3)
-    #         cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop)
-    #         ret,frame = cap.read() # return a single frame in variable `frame`
-    #         if frame is None or ret is None:
-    #             # ("Error in capture Retrying...")
-    #             it = it + 1
-    #         else:
-    #             break
-
-
     try:
         #perform a prediction
         predicted_img3,confidence,label = predict(frame,label_dict,face_recognizer)
@@ -184,7 +164,7 @@ def main(frame):
 
         #display both images
         if int(confidence)>=30:
-            # print("USER:",label)
+            print("IMAGE RECO NAME:",label)
             return label
         else:
             # print("Cant Recognize you....")
