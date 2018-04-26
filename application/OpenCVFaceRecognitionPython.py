@@ -47,9 +47,10 @@ def prepare_training_data(data_folder_path):
     #------STEP-1--------
     #get the directories (one directory for each subject) in data folder
     dirs = os.listdir(data_folder_path)
-    print(dirs)
-    dirs.remove('uniqueIds.csv')
-    print(dirs)
+    # (dirs)
+    # dirs.remove('uniqueIds.csv')
+    # dirs.remove('test.wav')
+    # (dirs)
     #list to hold all subject faces
     faces = []
     labels = []
@@ -57,36 +58,42 @@ def prepare_training_data(data_folder_path):
 
     #let's go through each directory and read images within it
     for dir_name in dirs:
-        print(dir_name)
-        subject_dir_path = data_folder_path + "/" + dir_name
-        #get the images names that are inside the given subject directory
-        subject_images_names = os.listdir(subject_dir_path)
-        #------STEP-3--------
-        #go through each image name, read image, 
-        #detect face and add face to list of faces
-        for image_name in subject_images_names:
-            
-            #ignore system files like .DS_Store
-            # if image_name.startswith("."):
-            #     continue;
-            if not re.search(r'.jpg|.png$', image_name):
-               continue;
-            #build image path
-            #sample image path = training-data/s1/1.pgm
-            image_path = subject_dir_path + "/" + image_name
-            print(image_path)
-            #read image
-            image = cv2.imread(image_path)
-            #detect face
-            face, rect = detect_face(image)
-            #------STEP-4--------
-            #for the purpose of this tutorial
-            #we will ignore faces that are not detected
-            if face is not None:
-                #add face to list of faces
-                faces.append(face)
-                #add label for this face
-                labels.append(dir_name)
+        dir_path = os.path.join(data_folder_path, dir_name)
+        if "test_data" in dir_path:
+            continue
+        if os.path.isdir(dir_path):
+            # print(dir_name)
+            subject_dir_path = data_folder_path + "/" + dir_name
+            #get the images names that are inside the given subject directory
+            subject_images_names = os.listdir(subject_dir_path)
+            #------STEP-3--------
+            #go through each image name, read image, 
+            #detect face and add face to list of faces
+            for image_name in subject_images_names:
+                
+                #ignore system files like .DS_Store
+                # if image_name.startswith("."):
+                #     continue;
+                if not re.search(r'.jpg|.png$', image_name):
+                   continue;
+                #build image path
+                #sample image path = training-data/s1/1.pgm
+                image_path = subject_dir_path + "/" + image_name
+                # (image_path)
+                #read image
+                image = cv2.imread(image_path)
+                #detect face
+                face, rect = detect_face(image)
+                #------STEP-4--------
+                #for the purpose of this tutorial
+                #we will ignore faces that are not detected
+                if face is not None:
+                    #add face to list of faces
+                    faces.append(face)
+                    #add label for this face
+                    labels.append(dir_name)
+        else:
+            continue
 
     return faces, labels
 
@@ -121,14 +128,14 @@ def predict(test_img, label_dict,face_recognizer):
     return img, confidence,label_dict.get(label)
 
 # In[5]:
-def main(frame):
+def main(frame,BASEDIR):
     #let's first prepare our training data
     #data will be in two lists of same size
     #one list will contain all the faces
     #and other list will contain respective labels for each face
-    print("Preparing data...")
-    faces, labels = prepare_training_data("/home/ubuntu/database")
-    print("Data prepared")
+    # ("Preparing data...")
+    faces, labels = prepare_training_data(BASEDIR+"/database")
+    # ("Data prepared")
     #format labels
     unique_labels = list(set(labels))
     count = 1
@@ -149,28 +156,6 @@ def main(frame):
     face_recognizer.train(faces,np.array(temp_labels))
 
 
-    # Now that we have the prediction function well defined, next step is to actually call this function on our test images and display those test images to see if our face recognizer correctly recognized them. So let's do it. This is what we have been waiting for.
-
-    # In[10]:
-
-    # print("Predicting images...")
-
-
-
-    # #load test images
-    it = 1
-    # while it<=20:
-    #         print("Taking Picture....")
-    #         time.sleep(3)
-    #         cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop)
-    #         ret,frame = cap.read() # return a single frame in variable `frame`
-    #         if frame is None or ret is None:
-    #             print("Error in capture Retrying...")
-    #             it = it + 1
-    #         else:
-    #             break
-
-
     try:
         #perform a prediction
         predicted_img3,confidence,label = predict(frame,label_dict,face_recognizer)
@@ -179,13 +164,13 @@ def main(frame):
 
         #display both images
         if int(confidence)>=30:
-            print("USER:",label)
+            print("IMAGE RECO NAME:",label)
             return label
         else:
-            print("Cant Recognize you....")
-            print("CONFIDENCE:",confidence)
+            # print("Cant Recognize you....")
+            # print("CONFIDENCE:",confidence)
             return 1
     except Exception as e:
-        print("Can't Identify you.....")
-        print(e)
+        # print("Can't Identify you.....")
+        # print(e)
         return 1
