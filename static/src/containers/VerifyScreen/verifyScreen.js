@@ -53,20 +53,14 @@ class VerifyScreen extends React.Component{
 					if(key === 'image1'){
 						imageCount++;
 					}
-					if(key === 'image2'){
-						imageCount++;
-					}
-					if(key === 'image3'){
-						imageCount++;
-					}
 					if(key === 'audioClip'){
 						audoCount ++;
 					}
 				})
-				if(imageCount !== 3){
+				if(imageCount !== 1){
 					this.setState({
 						popup: true,
-						message: "Please capture atleast 3 images."
+						message: "Please capture atleast 1 image."
 					});
 				}
 				else if(audoCount !== 1){
@@ -220,7 +214,7 @@ class VerifyScreen extends React.Component{
     ];
 
 		return (
-      <div style={{backgroundColor: 'black', height: '138%'}}>
+      <div style={{backgroundColor: 'black'}}>
         <Paper zDepth={2} style={{height: '100%'}}>
 					{
 						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
