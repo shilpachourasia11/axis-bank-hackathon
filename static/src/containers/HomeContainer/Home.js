@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Header } from '../../components/Header';
 import { verify, reset } from "./../../actions/homeActions";
-
 import ImageCapture from './../ImageCapture/imageCapture.js';
 import VoiceRecorder from './../VoiceRecorder/voiceRecorder.js';
 import VerifyScreen from './../VerifyScreen/verifyScreen.js';
@@ -42,9 +41,9 @@ class Home extends React.Component{
   };
 
 	render(){
-		console.log(this.props)
 		return (
-				<div>
+				<div style={{ height: '100%', backgroundColor: '#303030' }}>
+				<Header />
         <Tabs
 					value={this.state.value}
         	onChange={this.handleChange}

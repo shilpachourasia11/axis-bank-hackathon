@@ -68,7 +68,7 @@ export class Header extends Component {
                 <LeftNav open={this.state.open}>
                     {
                             <div>
-                                <MenuItem onClick={() => this.dispatchNewRoute('/home')}>
+                                <MenuItem onClick={() => this.dispatchNewRoute('/verify')}>
                                     Verification
                                 </MenuItem>
                                 <MenuItem onClick={() => this.dispatchNewRoute('/register')}>
