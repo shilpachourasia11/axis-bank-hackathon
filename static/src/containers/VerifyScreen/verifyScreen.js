@@ -171,7 +171,7 @@ class VerifyScreen extends React.Component{
 					audoCount ++;
 				}
 			})
-			if(imageCount !== 3){
+			if(imageCount !== 4){
 				this.setState({
 					popup: true,
 					message: "Please capture atleast 4 images."
