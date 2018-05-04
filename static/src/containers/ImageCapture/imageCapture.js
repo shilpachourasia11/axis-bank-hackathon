@@ -90,7 +90,6 @@ class ImageCapture extends React.Component{
 		const style = {
 		  preview: {
 		    position: 'relative',
-				marginLeft: '35%'
 		  },
 		  captureContainer: {
 		    display: 'flex',
@@ -106,51 +105,8 @@ class ImageCapture extends React.Component{
 		    height: 56,
 		    width: 56,
 		    color: '#000',
-		  },
-		  captureImage: {
-		    width: '100%',
-		  },
-			floatingButton: {
-				float: 'right',
-				marginTop: '-40px'
-			},
-			raisedButton: {
-				width: '50%'
-			},
-			hiddenButton: {
-				height:'0px',
-				overflow:'hidden'
-			},
-			vl: {
-				borderLeft: '1px solid black',
-	 			height: '95px',
-				float: 'right',
-				marginRight: '48%',
-    		marginTop: '-50px'
-			},
-			textUrl: {
-				marginLeft: '45px'
-			},
-			imageText: {
-				marginTop: '70px'
-			}
+		  }
 		};
-
-		const uploadStyle = {
-			height: 100,
-      width: 100,
-      marginLeft: 30,
-			marginTop: 20,
-			float: 'right',
-			marginRight: 50
-		}
-
-    const stylePic = {
-      height: 100,
-      width: 100,
-      marginLeft: 15,
-      display: 'inline-block',
-    };
 
 		const imgStyle = {
 			height: 100,
@@ -161,7 +117,6 @@ class ImageCapture extends React.Component{
 
 		return (
       <div>
-          <Divider />
 					<div>
 						<img  style={imgStyle} alt="Smiley face" src={this.state.image1}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image2}/>
@@ -175,21 +130,26 @@ class ImageCapture extends React.Component{
 							// </RaisedButton>
 							// : null
 						}
-						<Webcam
-							style={style.preview}
-							audio={false}
-							height={350}
-							ref={this.setRef}
-							screenshotFormat="image/jpeg"
-							width={350}
-							ref = {
-								(webcam) => {
-									this.webcam = webcam;
-								}
-							}
-						/>
+					</div>
+					<div>
 						<center>
-							<button style={style.captureButton} onClick={this.capture}><b>Click</b></button>
+							<Webcam
+								style={style.preview}
+								audio={false}
+								height={350}
+								ref={this.setRef}
+								screenshotFormat="image/jpeg"
+								width={350}
+								ref = {
+									(webcam) => {
+										this.webcam = webcam;
+									}
+								}
+							/>
+
+							<p>
+								<button style={style.captureButton} onClick={this.capture}><b>Click</b></button>
+							</p>
 						</center>
 					</div>
       </div>
