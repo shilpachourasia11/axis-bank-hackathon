@@ -54,8 +54,7 @@ class Home extends React.Component{
           <Tab label="Voice Recognition" value='1'>
 						<VoiceRecorder type={this.props.type}/>
           </Tab>
-          <Tab
-            label={this.props.type ? "User Data": "Verification"} value='2'>
+          <Tab label={this.props.type ? "User Data": "Verification"} value='2'>
 						<VerifyScreen value={this.state.value} label={this.props.type ? "User Data": "Verification"}/>
           </Tab>
         </Tabs>

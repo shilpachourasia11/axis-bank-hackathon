@@ -44,36 +44,6 @@ class ImageCapture extends React.Component{
 		}
 	}
 
-	// takePicture = () => {
-	// 	console.log(this.camera)
-  //   this.camera.capture()
-  //   .then(blob => {
-	// 		let key = this.state.key;
-	// 		let imgKey = 'image' + key;
-	// 		this.setState({
-	// 			[imgKey] : URL.createObjectURL(blob)
-	// 		});
-	// 		this.convertImageFormat(blob)
-  //   })
-  // }
-
-	// convertImageFormat = (blob)=> {
-	// 	let reader = new FileReader();
-	// 	reader.readAsDataURL(blob);
-	// 	var that = this;
-	// 	reader.onloadend = function() {
-  //   	let base64data = reader.result;
-	// 		let key = that.state.key;
-	// 		let userData = that.props.home.userData;
-	// 		let imgKey = 'image' + key;
-	// 		userData[imgKey] = base64data;
-	// 		that.props.saveUserData(userData);
-	// 		that.setState({
-	// 			key: key + 1
-	// 		});
- 	// 	}
-	// }
-
 	capture = () => {
     const imageSrc = this.webcam.getScreenshot();
 		let key = this.state.key;
@@ -196,11 +166,8 @@ class ImageCapture extends React.Component{
 						<img  style={imgStyle} alt="Smiley face" src={this.state.image1}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image2}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image3}/>
-						{
-							this.props.imageCount === 5 ?
-							<img style={imgStyle} alt="Smiley face" src={this.state.image4}/>
-							: null
-						}
+						<img style={imgStyle} alt="Smiley face" src={this.state.image4}/>
+
 						{
 							// this.props.imageCount === 5 ?
 							// <RaisedButton label="Upload" labelPosition="before" onClick={this.chooseFile} style= {uploadStyle}>

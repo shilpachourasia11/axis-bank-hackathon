@@ -20,7 +20,9 @@ const style = {
 
 const homeStyle = {
   background: "url('https://i.ytimg.com/vi/SmO5wKFZnmk/maxresdefault.jpg')",
-  height: '100%'
+  height: '100%',
+  width: '100%',
+  marginLeft: 0
 }
 
 export default class LoginView extends React.Component {
