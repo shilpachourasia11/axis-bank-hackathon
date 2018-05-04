@@ -5,7 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Header } from '../../components/Header';
-import { verify, reset } from "./../../actions/homeActions";
+import { verify, reset, saveUserData } from "./../../actions/homeActions";
 import ImageCapture from './../ImageCapture/imageCapture.js';
 import VoiceRecorder from './../VoiceRecorder/voiceRecorder.js';
 import VerifyScreen from './../VerifyScreen/verifyScreen.js';
@@ -35,7 +35,24 @@ class Home extends React.Component{
 				return;
 			}
 			if(this.props.type !== 'register'){
-				this.props.verify(this.props.home.userData);
+				let data = this.props.home.userData;
+				let imageCount = 0;
+				let audoCount = 0;
+				Object.keys(data).map((key, index)=>{
+					if(key === 'image1'){
+						imageCount++;
+					}
+					if(key === 'image2'){
+						imageCount++;
+					}
+					if(key === 'audioClip1'){
+						audoCount ++;
+					}
+				})
+
+				if(imageCount >= 2 && audoCount > 0){
+					this.props.verify(this.props.home.userData);
+				}
 			}
 		}
   };
@@ -43,7 +60,7 @@ class Home extends React.Component{
 	render(){
 		return (
 				<div style={{ height: '100%', backgroundColor: '#303030' }}>
-				<Header />
+				<Header resetUserData={this.props.saveUserData}/>
         <Tabs
 					value={this.state.value}
         	onChange={this.handleChange}
@@ -54,7 +71,8 @@ class Home extends React.Component{
           <Tab label="Voice Recognition" value='1'>
 						<VoiceRecorder type={this.props.type}/>
           </Tab>
-          <Tab label={this.props.type ? "User Data": "Verification"} value='2'>
+          <Tab
+            label={this.props.type ? "User Data": "Verification"} value='2'>
 						<VerifyScreen value={this.state.value} label={this.props.type ? "User Data": "Verification"}/>
           </Tab>
         </Tabs>
@@ -76,6 +94,9 @@ const mapDispatchToProps= (dispatch) => {
 		},
 		reset: () => {
 			dispatch(reset())
+		},
+		saveUserData: (data) => {
+			dispatch(saveUserData(data))
 		}
   }
 };

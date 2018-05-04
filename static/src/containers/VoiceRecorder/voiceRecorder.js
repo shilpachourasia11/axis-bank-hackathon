@@ -7,6 +7,11 @@ import Paper from 'material-ui/Paper';
 import { ReactMic } from 'react-mic';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
 
 class VoiceRecorder extends React.Component{
 	constructor(props) {
@@ -14,7 +19,8 @@ class VoiceRecorder extends React.Component{
 		this.props = props;
     this.state = {
       record: false,
-			value: 1
+			value: 1,
+			clipNumber: 1
     }
 	}
 
@@ -48,10 +54,14 @@ class VoiceRecorder extends React.Component{
 		reader.readAsDataURL(blob.blob);
 		var that = this;
 		reader.onloadend = function() {
+			let clipNumber = that.state.clipNumber;
     	let base64data = reader.result;
 			let userData = that.props.home.userData;
-			userData['audioClip'] = base64data;
+			userData['audioClip' + clipNumber] = base64data;
 			that.props.saveUserData(userData);
+			that.setState({
+				clipNumber: (clipNumber+1)
+			});
  		}
 	}
 
@@ -61,10 +71,79 @@ class VoiceRecorder extends React.Component{
 
 	handleChange = (event, index, value) => this.setState({value});
 
+	getText = (clip) => {
+		let type = this.state.value;
+		if(clip === 1){
+			if(type === 1){
+				return (
+					<p>
+						डॉन को पकड़ना मुश्किल ही नहीं, नामुमकिन है.
+					</p>
+				)
+			}
+			else{
+				return (
+					<p>
+						Because he's the hero Gotham deserves, but not the one it needs right now.
+					</p>
+				)
+			}
+		}
+		else if(clip === 2){
+			if(type === 1){
+				return (
+					<p>
+						आज मेरे पास बंगला है, गाडी है, बैंक बैलेंस है, क्या है तुम्हारे पास?
+					</p>
+				)
+			}
+			else{
+				return (
+					<p>
+						As you know, madness is like gravity...all it takes is a little push.
+					</p>
+				)
+			}
+		}
+		else{
+			if(type === 1){
+				return (
+					<p>
+						रिश्ते में तोह हम तुम्हारे बाप लगते हैं, नाम है शहंशाह.
+					</p>
+				)
+			}
+			else{
+				return (
+					<p>
+						You think my name's funny do you? No need to tell me who you are. Red hair and a hand-me-down robe? You must be a Weasley.
+					</p>
+				)
+			}
+		}
+	}
+
 	render(){
 		return (
-      <div style={{backgroundColor: 'black'}}>
+      <div style={{backgroundColor: '#303030'}}>
+				{
+					this.props.type === 'register' ?
+					<Stepper activeStep={this.state.clipNumber-1}>
+						<Step>
+							<StepLabel style={{color: 'white'}}>Recording clip 1</StepLabel>
+						</Step>
+						<Step>
+							<StepLabel style={{color: 'white'}}>Recording clip 2</StepLabel>
+						</Step>
+						<Step>
+							<StepLabel style={{color: 'white'}}>Recording clip 3</StepLabel>
+						</Step>
+					</Stepper>
+					: null
+				}
+
         <Paper zDepth={2} style={{height: '100%', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
+
           <center>
             <ReactMic
               record={this.state.record}
@@ -85,21 +164,9 @@ class VoiceRecorder extends React.Component{
 									<MenuItem value={2} primaryText="English" />
 								</SelectField>
 								{
+
 									this.props.type === 'register' ?
-									this.state.value === 1 ?
-									<p>
-										हम, भारत के लोग.. संविधान को अंगीकृत, अधिनियमित तथा आत्मार्पित करते हैं.
-										इससे यह निष्कर्ष निकलता है कि संविधान का निर्माण भारतीय जनता के द्वारा किया है. इस प्रकार भारत की जनता ही समस्त राजनीतिक सत्ता का स्रोत है. यह सच है कि समस्त भारतीय जनता ने इसका निर्माण नहीं किया है, फिर भी यह एक सच्चाई है कि इसके निर्माता जनता के प्रतिनिधि थे. इन प्रतिनिधियों ने यह स्वीकार किया कि सम्पूर्ण राज्यशक्ति का मूल स्रोत भारतीय जनता में निहित है. 1950 ई. में "गोपालन बनाम मद्रास राज्य" नामक मुक़दमे में सर्वोच्च न्यायालय ने इसी आशय का निर्णय दिया और इसमें स्पष्ट किया कि भारतीय जनता ने अपनी सर्वोच्च इच्छा को व्यक्त करते हुए लोकतंत्रात्मक आदर्श अपनाया है.
-									</p>
-									:
-									<p>
-									WE, THE PEOPLE OF INDIA, having solemnly resolved to constitute India into a SOVEREIGN SOCIALIST SECULAR DEMOCRATIC REPUBLIC and to secure to all its citizens
-									JUSTICE, social, economic and political;
-									LIBERTY of thought, expression, belief, faith and worship;
-									EQUALITY of status and of opportunity; and to promote among them all
-									FRATERNITY assuring the dignity of the individual and the unity and integrity of the Nation;
-									IN OUR CONSTITUENT ASSEMBLY this 26th day of November, 1949, do HEREBY ADOPT, ENACT AND GIVE TO OURSELVES THIS CONSTITUTION
-									</p>
+									this.getText(this.state.clipNumber)
 									:
 									this.state.value === 1 ?
 									<p>
