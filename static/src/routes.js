@@ -22,7 +22,7 @@ export default (
     <Route path="/" component={App}>
         <Route path="home" component={ LoginView } />
         <Route path="register" component={ RegisterView } />
-        <Route path="main" component={ HomeContainer } />
+        <Route path="main" component={ LoginView } />
         <Route path="verify" component={ HomeContainer } />
         <Route path="*" component={DetermineAuth(NotFound)} />
     </Route>
