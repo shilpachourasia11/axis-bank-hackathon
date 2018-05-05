@@ -19,7 +19,8 @@ class Home extends React.Component{
 			search: null,
       activeStep: '0',
       open: false,
-			value: "1"
+			value: "1",
+			stopRecording: false
 		}
 	}
 
@@ -29,7 +30,19 @@ class Home extends React.Component{
 				value: "0"
 			});
 		}
+
+		if(this.props.home.success === true){
+			this.setState({
+				stopRecording: true
+			});
+		}
 		this.props = nextProps;
+	}
+
+	resetRecorder = () => {
+		this.setState({
+			stopRecording: false
+		});
 	}
 
 	componentWillMount(){
@@ -70,7 +83,7 @@ class Home extends React.Component{
 						</Tab>
 						:
 						<Tab label="Voice Recognition" value='1'>
-							<VoiceVerification type={this.props.type}/>
+							<VoiceVerification type={this.props.type} stopRecording={this.state.stopRecording} resetRecorder={this.resetRecorder}/>
 						</Tab>
 					}
           <Tab

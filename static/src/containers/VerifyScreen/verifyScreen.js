@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class VerifyScreen extends React.Component{
 	constructor(props) {
@@ -29,12 +30,19 @@ class VerifyScreen extends React.Component{
 			idError: "",
 			message: "",
 			error: false,
-			popup: false
+			popup: false,
+			loader: false
     }
 	}
 
 	componentWillReceiveProps(nextProps){
 		this.props = nextProps;
+
+		if(this.props.home.error || this.props.home.success){
+			this.setState({
+				loader: false
+			});
+		}
 
 		if(this.props.value !== "2"){
 			return;
@@ -130,7 +138,6 @@ class VerifyScreen extends React.Component{
 	}
 
 	submit = () => {
-		console.log(this.props.home.userData)
 		let data = this.props.home.userData;
 		let imageCount = 0;
 		let audoCount = 0;
@@ -242,6 +249,9 @@ class VerifyScreen extends React.Component{
 				idError: ""
 			});
 		}
+		this.setState({
+			loader: true
+		});
 		this.props.sendData(this.props.home.userData);
 	}
 
@@ -327,6 +337,11 @@ class VerifyScreen extends React.Component{
 								{
 									this.props.label === "User Data" ?
 									<RaisedButton label="Submit" onClick={this.submit} primary={true}/>
+									: null
+								}
+								{
+									this.state.loader ?
+									<CircularProgress size={60} thickness={7} />
 									: null
 								}
 							</center>)

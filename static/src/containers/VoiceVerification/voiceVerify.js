@@ -25,6 +25,12 @@ class VoiceRecorder extends React.Component{
     }
 	}
 
+	componentWillReceiveProps(nextProps){
+		if(this.props.stopRecording !== nextProps.stopRecording && nextProps.stopRecording === true){
+			this.stopRecording();
+		}
+	}
+
   startRecording = (recordedBlob) => {
     this.setState({
       record: true
@@ -36,6 +42,7 @@ class VoiceRecorder extends React.Component{
     this.setState({
       record: false
     });
+		this.props.resetRecorder();
   }
 
 	stream = (recordedBlob) => {
@@ -46,7 +53,6 @@ class VoiceRecorder extends React.Component{
 		this.setState({
 			recordedBlob
 		});
-		//this.convertClipFormat(recordedBlob);
   }
 
 	convertClipFormat = (blob)=> {
