@@ -69,7 +69,6 @@ class Home extends React.Component{
   };
 
 	render(){
-		console.log(this.props.type)
 		return (
 				<div style={{ height: '100%', backgroundColor: '#303030' }}>
 				<Header resetUserData={this.props.saveUserData}/>
