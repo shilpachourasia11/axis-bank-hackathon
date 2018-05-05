@@ -122,10 +122,14 @@ class VoiceRecorder extends React.Component{
 			}
 		}
 	}
-
+	
 	render(){
+		let div_height = 'calc(100vh - 184px)';
+		if (this.props.type !== 'register'){
+			div_height = 'calc(100vh - 112px)';
+		}
 		return (
-      <div style={{backgroundColor: '#303030'}}>
+      <div style={{ backgroundColor: '#303030', height: div_height }}>
 				{
 					this.props.type === 'register' ?
 					<Stepper activeStep={this.state.clipNumber-1}>

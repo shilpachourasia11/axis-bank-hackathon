@@ -104,17 +104,19 @@ class ImageCapture extends React.Component{
 		  }
 		};
 
-		const imgStyle = {
-			height: 100,
-      width: 100,
+		const imgStyle = {			
+			width: '100px',	
+			maxWidth: '100%',
+			height: '100px',
+			maxHeight: '100%',
 			display: 'inline-block',
-			marginLeft: 15,
+			marginLeft: '15px',
 		}
 
 		return (
-      <div>
-					<div>
-						<img  style={imgStyle} alt="Smiley face" src={this.state.image1}/>
+      <div style={{height: 'calc(100vh - 122px)'}}>
+					<div style={{marginTop: '10px'}}>
+						<img style={imgStyle} alt="Smiley face" src={this.state.image1}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image2}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image3}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image4}/>
@@ -124,7 +126,7 @@ class ImageCapture extends React.Component{
 							<Webcam
 								style={style.preview}
 								audio={false}
-								height={350}
+								height={ window.innerHeight - 300 }
 								ref={this.setRef}
 								screenshotFormat="image/jpeg"
 								width={350}
