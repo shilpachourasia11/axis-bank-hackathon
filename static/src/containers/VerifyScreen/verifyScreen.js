@@ -266,13 +266,13 @@ class VerifyScreen extends React.Component{
         onClick={this.handleClose}
       />
     ];
-
+		const loading = <div style={{textAlign: 'center', paddingTop: '20px'}}>Loading...</div>;
 		return (
-      <div style={{backgroundColor: 'black'}}>
+      <div style={{backgroundColor: 'black', height: 'calc(100vh - 112px)'}}>
         <Paper zDepth={2} style={{height: '100%'}}>
 					{
 						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
-						"Loading..."
+						loading
 						:
 							this.props.label !== "User Data" ?
 							(<center>

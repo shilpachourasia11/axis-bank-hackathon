@@ -8,22 +8,23 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { browserHistory } from 'react-router';
 
-const style = {
-    marginTop: 50,
-    paddingBottom: 50,
-    marginLeft: '25%',
-    paddingTop: 25,
-    width: '50%',
-    textAlign: 'center',
-    display: 'inline-block'
-};
+import './LoginView.scss';
+// const style = {
+//     marginTop: 50,
+//     paddingBottom: 50,
+//     marginLeft: '25%',
+//     paddingTop: 25,
+//     width: '50%',
+//     textAlign: 'center',
+//     display: 'inline-block'
+// };
 
-const homeStyle = {
-  background: "url('https://i.ytimg.com/vi/SmO5wKFZnmk/maxresdefault.jpg')",
-  height: '100%',
-  width: '100%',
-  marginLeft: 0
-}
+// const homeStyle = {
+//   background: "url('https://i.ytimg.com/vi/SmO5wKFZnmk/maxresdefault.jpg')",
+//   height: '100%',
+//   width: '100%',
+//   marginLeft: 0
+// }
 
 export default class LoginView extends React.Component {
 
@@ -49,25 +50,29 @@ export default class LoginView extends React.Component {
 
     render() {
         return (
-            <div className="col-md-6 col-md-offset-3" style={homeStyle}>
-                <Paper style={style}>
-                    <form role="form">
-                        <div className="text-center">
-                            <h2>Face Voice Recognition</h2>
-                            <RaisedButton
-                              style={{ marginTop: 50 }}
-                              label="Register Details"
-                              onClick={() => this.dispatchNewRoute('/register')}
-                            />
+            <div className="home_style">
+                {/* <div className="row">  */}
+                    <div className="col-md-6 col-md-offset-3">
+                        <Paper className="home_paper">
+                            <form role="form">
+                                <div className="text-center">
+                                    <h2 className="home_title">Face Voice Recognition</h2>
+                                    <RaisedButton
+                                    style={{ marginTop: 50 }}
+                                    label="Register Details"
+                                    onClick={() => this.dispatchNewRoute('/register')}
+                                    />
 
-                            <RaisedButton
-                              style={{ marginTop: 50, marginLeft: 15 }}
-                              label="Verification"
-                              onClick={() => this.dispatchNewRoute('/verify')}
-                            />
-                        </div>
-                    </form>
-                </Paper>
+                                    <RaisedButton
+                                    style={{ marginTop: 50, marginLeft: 15 }}
+                                    label="Verification"
+                                    onClick={() => this.dispatchNewRoute('/verify')}
+                                    />
+                                </div>
+                            </form>
+                        </Paper>
+                    </div>
+                {/* </div>     */}
             </div>
         );
 

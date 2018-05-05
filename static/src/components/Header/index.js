@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 
 import * as actionCreators from '../../actions/auth';
+import './Header.scss';
 
 export class Header extends Component {
     constructor(props) {
@@ -57,10 +58,10 @@ export class Header extends Component {
 
                     }
                 </LeftNav> */}
-                <AppBar
+                <AppBar                  
                   showMenuIconButton={false}
                   title="Face-Voice Recognition"
-                  iconElementRight={<FlatButton label="Home" onClick={() => this.dispatchNewRoute('/home')}/>}
+                  iconElementRight={<FlatButton label="Home" style={{color: '#fff'}} onClick={() => this.dispatchNewRoute('/home')}/>}
 
                   // onLeftIconButtonTouchTap={() => this.openNav()}
                 />

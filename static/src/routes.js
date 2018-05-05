@@ -12,10 +12,9 @@ import NotFound from './components/NotFound';
 
 export default (
     <Route path="/" component={App}>
-        <Route path="home" component={ LoginView } />
-        <Route path="register" component={ RegisterView } />
-        <Route path="main" component={ LoginView } />
-        <Route path="verify" component={ HomeContainer } />
+        <Route exact path="/home" component={ LoginView } />        
+        <Route exact path="register" component={ RegisterView } />        
+        <Route exact path="verify" component={ HomeContainer } />
         <Route path="*" component={NotFound} />
     </Route>
 );
