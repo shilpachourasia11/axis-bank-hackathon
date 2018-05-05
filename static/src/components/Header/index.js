@@ -44,25 +44,10 @@ export class Header extends Component {
     render() {
         return (
             <header>
-                {/* <LeftNav open={this.state.open}>
-                    {
-                            <div>
-                                <MenuItem onClick={() => this.dispatchNewRoute('/verify')}>
-                                    Verification
-                                </MenuItem>
-                                <MenuItem onClick={() => this.dispatchNewRoute('/register')}>
-                                    Register
-                                </MenuItem>
-                            </div>
-
-                    }
-                </LeftNav> */}
                 <AppBar
                   showMenuIconButton={false}
                   title="Face-Voice Recognition"
                   iconElementRight={<FlatButton label="Home" onClick={() => this.dispatchNewRoute('/home')}/>}
-
-                  // onLeftIconButtonTouchTap={() => this.openNav()}
                 />
             </header>
 

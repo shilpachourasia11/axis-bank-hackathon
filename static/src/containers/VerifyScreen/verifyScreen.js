@@ -143,7 +143,7 @@ class VerifyScreen extends React.Component{
 		if(Object.keys(data).length === 0){
 			this.setState({
 				popup: true,
-				message: "Please capture atleast 3 images and 1 audio clip before proceeding."
+				message: "Please capture atleast 4 images and 4 audio clips before proceeding."
 			});
 			return;
 		}
