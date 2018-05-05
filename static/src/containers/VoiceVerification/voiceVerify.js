@@ -54,7 +54,6 @@ class VoiceRecorder extends React.Component{
 		this.setState({
 			recordedBlob
 		});
-		//this.props.verify(this.props.home.userData);
   }
 
 	convertClipFormat = (blob)=> {
@@ -74,7 +73,6 @@ class VoiceRecorder extends React.Component{
 		let myInterval;
 		if(this.state.record === false){
 			clearInterval(myInterval);
-			this.props.reset();
 			return;
 		}
 		else{
