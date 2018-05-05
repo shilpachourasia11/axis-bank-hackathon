@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 /* application components */
-import { Footer } from '../../components/Footer';
 import Home from '../HomeContainer/index';
 /* global styles for app */
 import './styles/app.scss';

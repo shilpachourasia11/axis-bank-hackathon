@@ -11,16 +11,6 @@ import * as actionCreators from '../actions/auth';
 
 import { validateEmail } from '../utils/misc';
 
-function mapStateToProps(state) {
-    return {
-        isRegistering: state.auth.isRegistering,
-        registerStatusText: state.auth.registerStatusText,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(actionCreators, dispatch);
-}
 
 const style = {
     marginTop: 50,
@@ -31,7 +21,6 @@ const style = {
     display: 'inline-block',
 };
 
-@connect(mapStateToProps, mapDispatchToProps)
 export default class RegisterView extends React.Component {
 
     constructor(props) {
@@ -47,72 +36,7 @@ export default class RegisterView extends React.Component {
         };
     }
 
-    isDisabled() {
-        let email_is_valid = false;
-        let password_is_valid = false;
-
-        if (this.state.email === '') {
-            this.setState({
-                email_error_text: null,
-            });
-        } else if (validateEmail(this.state.email)) {
-            email_is_valid = true;
-            this.setState({
-                email_error_text: null,
-            });
-
-        } else {
-            this.setState({
-                email_error_text: 'Sorry, this is not a valid email',
-            });
-        }
-
-        if (this.state.password === '' || !this.state.password) {
-            this.setState({
-                password_error_text: null,
-            });
-        } else if (this.state.password.length >= 6) {
-            password_is_valid = true;
-            this.setState({
-                password_error_text: null,
-            });
-        } else {
-            this.setState({
-                password_error_text: 'Your password must be at least 6 characters',
-            });
-
-        }
-
-        if (email_is_valid && password_is_valid) {
-            this.setState({
-                disabled: false,
-            });
-        }
-
-    }
-
-    changeValue(e, type) {
-        const value = e.target.value;
-        const next_state = {};
-        next_state[type] = value;
-        this.setState(next_state, () => {
-            this.isDisabled();
-        });
-    }
-
-    _handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            if (!this.state.disabled) {
-                this.login(e);
-            }
-        }
-    }
-
-    login(e) {
-        e.preventDefault();
-        this.props.registerUser(this.state.email, this.state.password, this.state.redirectTo);
-    }
-
+  
     render() {
         return (
                     <Home type="register"/>
