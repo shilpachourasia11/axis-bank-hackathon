@@ -87,15 +87,18 @@ class Actions(object):
             return False
 
     @classmethod
-    def saveAudioClip(self, audio, folderName,database_path):
+    def saveAudioClip(self, audio, folderName, database_path):
         path = database_path+"/{}".format(folderName)
-        fpath = path + "/" + folderName + ".webm"
+        # fpath = path + "/" + folderName + ".webm"
         try:
-            Actions.save(audio, path + "/" + folderName + ".webm")
-            Actions.redifend_wav_file(folderName, path, fpath)
+            for k,v in audio.items():
+                num = k.rsplit("Clip")[1]
+                fpath = path + "/" + folderName + "_" + num + ".webm"
+                Actions.save(audio[k], fpath)
+                Actions.redifend_wav_file(folderName + "_" + num, path, fpath)
             return True
         except Exception as e:
-            # (e)
+            # print(e)
             return False
 
     @classmethod

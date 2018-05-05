@@ -36,19 +36,22 @@ def index():
 @app.route("/saveData", methods=["POST"])
 def saveData():
     data = request.get_json()
+    # print(data)
     img = {}
+    audioClip = {}
     for k,v in data.items():
         if 'image' in k:
             img.update({k:data[k].rsplit("base64,")[1]})
+        if 'audio' in k:
+            audioClip.update({k:data[k].rsplit("base64")[1]})
 
-    audioClip = data['audioClip'].rsplit("base64,")[1]
     if act.checkUniqueness(data['adhar'],database_path):
         res1 = act.save_details(data,database_path)
         res2 = act.convert_and_save(img, data['adhar'],database_path)
         res3 = act.saveAudioClip(audioClip, data['adhar'],database_path)
-        obj.train()
+        # obj.train()
         if res1 and res2 and res3:
-            # ("Data got successfully saved!")
+            print("Data got successfully saved!")
             return jsonify({'type' : 'success', 'message': 'Data got successfully saved!'})
         else:
             return jsonify({'type' : 'error', 'message': 'Missing information!'})
@@ -63,13 +66,14 @@ def verify_user():
     try:
         print ("REMOVE ALL TEST FILES...")
         os.system("rm -rf "+BASE_DIR+"/database/test_data/*")
-        img = act.data_uri_to_cv2_img(data['image1'])
-        audio = data['audioClip'].rsplit("base64,")[1]
+        img1 = act.data_uri_to_cv2_img(data['image1'])
+        img2 = act.data_uri_to_cv2_img(data['image2'])
+        audio = data['audioClip1'].rsplit("base64,")[1]
         audio_file = BASE_DIR+"/database/test_data/test.webm"
         act.save(audio, audio_file)
         act.redifend_wav_file("test", BASE_DIR+"/database/test_data", audio_file)
         print ("CALLING IMAGE....")
-        dir_user = main(img,BASE_DIR)
+        dir_user = main(img1,BASE_DIR)
         audio_file =  BASE_DIR+"/database/test_data/test.wav"
         print ("CALLING VOICE....")
         res = obj.test(audio_file)
