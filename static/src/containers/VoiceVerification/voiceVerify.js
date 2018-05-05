@@ -44,7 +44,6 @@ class VoiceRecorder extends React.Component{
       record: false
     });
 		this.props.resetRecorder();
-		//clearInterval(myInterval);
   }
 
 	stream = (recordedBlob) => {
@@ -55,7 +54,7 @@ class VoiceRecorder extends React.Component{
 		this.setState({
 			recordedBlob
 		});
-		this.props.verify(this.props.home.userData);
+		//this.props.verify(this.props.home.userData);
   }
 
 	convertClipFormat = (blob)=> {
@@ -67,7 +66,7 @@ class VoiceRecorder extends React.Component{
 			let userData = that.props.home.userData;
 			userData['audioClip1'] = base64data;
 			that.props.saveUserData(userData);
-			//that.verifyMe();
+			that.verifyMe();
  		}
 	}
 
@@ -75,18 +74,16 @@ class VoiceRecorder extends React.Component{
 		let myInterval;
 		if(this.state.record === false){
 			clearInterval(myInterval);
-			console.log("stopped")
+			this.props.reset();
 			return;
 		}
 		else{
-			console.log("started")
-
 			myInterval = setInterval(this.myTimer(), 5000);
 		}
 	}
 
 	myTimer = () => {
-	   this.props.verify(this.props.home.userData);
+	  this.props.verify(this.props.home.userData);
 	}
 
 	handleRequestClose = () => {
@@ -124,7 +121,7 @@ class VoiceRecorder extends React.Component{
               backgroundColor="#FF4081" />
             <br/>
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
-            <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
+            {/* <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton> */}
 						<div>
 							<br/>
 								{
