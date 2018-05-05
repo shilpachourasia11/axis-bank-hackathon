@@ -47,13 +47,13 @@ class VerifyScreen extends React.Component{
 				if(this.props.label === "User Data"){
 					this.setState({
 						popup: true,
-						message: "Please capture atleast 4 images and 3 audio clips before proceeding."
+						message: "Please capture atleast 4 images and 3 audio clips before proceeding"
 					});
 				}
 				else{
 					this.setState({
 						popup: true,
-						message: "Please capture atleast 2 images and 1 audio clip before proceeding."
+						message: "Please record alteast 1 audio clip before proceeding"
 					});
 				}
 			}
@@ -85,13 +85,13 @@ class VerifyScreen extends React.Component{
 					if(imageCount !== 4){
 						this.setState({
 							popup: true,
-							message: "Please capture atleast 4 images."
+							message: "Please capture atleast 4 images"
 						});
 					}
 					else if(audoCount !== 3){
 						this.setState({
 							popup: true,
-							message: "Please record 3 audio clips."
+							message: "Please record 3 audio clips"
 						});
 					}
 					else{
@@ -105,13 +105,13 @@ class VerifyScreen extends React.Component{
 					if(imageCount < 2){
 						this.setState({
 							popup: true,
-							message: "Please capture atleast 2 images."
+							message: "Please capture atleast 2 images"
 						});
 					}
 					else if(audoCount === 0){
 						this.setState({
 							popup: true,
-							message: "Please record atleast 1 audio clip."
+							message: "Please record atleast 1 audio clip"
 						});
 					}
 					else{
@@ -143,7 +143,7 @@ class VerifyScreen extends React.Component{
 		if(Object.keys(data).length === 0){
 			this.setState({
 				popup: true,
-				message: "Please capture atleast 3 images and 1 audio clip before proceeding."
+				message: "Please capture atleast 4 images and 4 audio clips before proceeding"
 			});
 			return;
 		}
@@ -174,14 +174,14 @@ class VerifyScreen extends React.Component{
 			if(imageCount !== 4){
 				this.setState({
 					popup: true,
-					message: "Please capture atleast 4 images."
+					message: "Please capture atleast 4 images"
 				});
 				return;
 			}
 			else if(audoCount !== 3){
 				this.setState({
 					popup: true,
-					message: "Please record 3 audio clips."
+					message: "Please record 3 audio clips"
 				});
 				return;
 			}
@@ -272,7 +272,7 @@ class VerifyScreen extends React.Component{
         <Paper zDepth={2} style={{height: '100%'}}>
 					{
 						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
-						loading
+						  loading
 						:
 							this.props.label !== "User Data" ?
 							(<center>

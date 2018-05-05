@@ -28,14 +28,6 @@ export class Header extends Component {
       });
     }
 
-    //
-    // handleClickOutside() {
-    //   this.setState({
-    //       open: false,
-    //   });
-    // }
-
-
     openNav() {
         this.setState({
             open: true,
