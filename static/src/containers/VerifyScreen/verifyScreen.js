@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class VerifyScreen extends React.Component{
 	constructor(props) {
@@ -28,12 +29,20 @@ class VerifyScreen extends React.Component{
 			phError: "",
 			idError: "",
 			message: "",
-			error: false
+			error: false,
+			popup: false,
+			loader: false
     }
 	}
 
 	componentWillReceiveProps(nextProps){
 		this.props = nextProps;
+
+		if(this.props.home.error || this.props.home.success){
+			this.setState({
+				loader: false
+			});
+		}
 
 		if(this.props.value !== "2"){
 			return;
@@ -43,40 +52,78 @@ class VerifyScreen extends React.Component{
 			let imageCount = 0;
 			let audoCount = 0;
 			if(Object.keys(data).length === 0){
-				this.setState({
-					popup: true,
-					message: "Please capture atleast 3 images and 1 audio clip before proceeding."
-				});
+				if(this.props.label === "User Data"){
+					this.setState({
+						popup: true,
+						message: "Please capture atleast 4 images and 3 audio clips before proceeding"
+					});
+				}
+				else{
+					this.setState({
+						popup: true,
+						message: "Please record alteast 1 audio clip before proceeding"
+					});
+				}
 			}
 			else{
 				Object.keys(data).map((key, index)=>{
 					if(key === 'image1'){
 						imageCount++;
 					}
-					if(key === 'audioClip'){
+					if(key === 'image2'){
+						imageCount++;
+					}
+					if(key === 'image3'){
+						imageCount++;
+					}
+					if(key === 'image4'){
+						imageCount++;
+					}
+					if(key === 'audioClip1'){
+						audoCount ++;
+					}
+					if(key === 'audioClip2'){
+						audoCount ++;
+					}
+					if(key === 'audioClip3'){
 						audoCount ++;
 					}
 				})
-				if(imageCount !== 1){
-					this.setState({
-						popup: true,
-						message: "Please capture atleast 1 image."
-					});
-				}
-				else if(audoCount !== 1){
-					this.setState({
-						popup: true,
-						message: "Please record atleast 1 audio clip."
-					});
+				if(this.props.label === "User Data"){
+					if(imageCount !== 4){
+						this.setState({
+							popup: true,
+							message: "Please capture atleast 4 images"
+						});
+					}
+					else if(audoCount !== 3){
+						this.setState({
+							popup: true,
+							message: "Please record 3 audio clips"
+						});
+					}
+					else{
+						this.setState({
+							popup: false,
+							message: ""
+						});
+					}
 				}
 				else{
-					this.setState({
-						popup: false,
-						message: ""
-					});
+					if(audoCount === 0){
+						this.setState({
+							popup: true,
+							message: "Please record atleast 1 audio clip"
+						});
+					}
+					else{
+						this.setState({
+							popup: false,
+							message: ""
+						});
+					}
 				}
 			}
-
 		}
 	}
 
@@ -91,14 +138,13 @@ class VerifyScreen extends React.Component{
 	}
 
 	submit = () => {
-		console.log(this.props.home.userData)
 		let data = this.props.home.userData;
 		let imageCount = 0;
 		let audoCount = 0;
 		if(Object.keys(data).length === 0){
 			this.setState({
 				popup: true,
-				message: "Please capture atleast 3 images and 1 audio clip before proceeding."
+				message: "Please capture atleast 4 images and 4 audio clips before proceeding"
 			});
 			return;
 		}
@@ -113,21 +159,30 @@ class VerifyScreen extends React.Component{
 				if(key === 'image3'){
 					imageCount++;
 				}
-				if(key === 'audioClip'){
+				if(key === 'image4'){
+					imageCount++;
+				}
+				if(key === 'audioClip1'){
+					audoCount ++;
+				}
+				if(key === 'audioClip3'){
+					audoCount ++;
+				}
+				if(key === 'audioClip2'){
 					audoCount ++;
 				}
 			})
-			if(imageCount !== 3){
+			if(imageCount !== 4){
 				this.setState({
 					popup: true,
-					message: "Please capture atleast 3 images."
+					message: "Please capture atleast 4 images"
 				});
 				return;
 			}
-			else if(audoCount !== 1){
+			else if(audoCount !== 3){
 				this.setState({
 					popup: true,
-					message: "Please record atleast 1 audio clip."
+					message: "Please record 3 audio clips"
 				});
 				return;
 			}
@@ -194,6 +249,9 @@ class VerifyScreen extends React.Component{
 				idError: ""
 			});
 		}
+		this.setState({
+			loader: true
+		});
 		this.props.sendData(this.props.home.userData);
 	}
 
@@ -212,13 +270,13 @@ class VerifyScreen extends React.Component{
         onClick={this.handleClose}
       />
     ];
-
+		const loading = <div style={{textAlign: 'center', paddingTop: '20px'}}>Loading...</div>;
 		return (
-      <div style={{backgroundColor: 'black'}}>
+      <div style={{backgroundColor: 'black', height: 'calc(100vh - 112px)'}}>
         <Paper zDepth={2} style={{height: '100%'}}>
 					{
 						this.props.home.error === false && Object.keys(this.props.home.verifiedData).length === 0 && this.props.label !== "User Data"?
-						"Loading..."
+						  loading
 						:
 							this.props.label !== "User Data" ?
 							(<center>
@@ -279,6 +337,11 @@ class VerifyScreen extends React.Component{
 								{
 									this.props.label === "User Data" ?
 									<RaisedButton label="Submit" onClick={this.submit} primary={true}/>
+									: null
+								}
+								{
+									this.state.loader ?
+									<CircularProgress size={60} thickness={7} />
 									: null
 								}
 							</center>)

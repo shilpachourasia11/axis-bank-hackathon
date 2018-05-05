@@ -9,20 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 
 import * as actionCreators from '../../actions/auth';
+import './Header.scss';
 
-function mapStateToProps(state) {
-    return {
-        token: state.auth.token,
-        userName: state.auth.userName,
-        isAuthenticated: state.auth.isAuthenticated,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(actionCreators, dispatch);
-}
-
-@connect(mapStateToProps, mapDispatchToProps)
 export class Header extends Component {
     constructor(props) {
         super(props);
@@ -33,27 +21,11 @@ export class Header extends Component {
     }
 
     dispatchNewRoute(route) {
-        browserHistory.push(route);
-        this.setState({
-            open: false,
-        });
-
-    }
-
-
-    handleClickOutside() {
-        this.setState({
-            open: false,
-        });
-    }
-
-
-    logout(e) {
-        e.preventDefault();
-        this.props.logoutAndRedirect();
-        this.setState({
-            open: false,
-        });
+      this.props.resetUserData({})
+      browserHistory.push(route);
+      this.setState({
+          open: false,
+      });
     }
 
     openNav() {
@@ -65,10 +37,10 @@ export class Header extends Component {
     render() {
         return (
             <header>
-                <LeftNav open={this.state.open}>
+                {/* <LeftNav open={this.state.open}>
                     {
                             <div>
-                                <MenuItem onClick={() => this.dispatchNewRoute('/home')}>
+                                <MenuItem onClick={() => this.dispatchNewRoute('/verify')}>
                                     Verification
                                 </MenuItem>
                                 <MenuItem onClick={() => this.dispatchNewRoute('/register')}>
@@ -77,10 +49,13 @@ export class Header extends Component {
                             </div>
 
                     }
-                </LeftNav>
+                </LeftNav> */}
                 <AppBar
-                  title="Face-Voice Recognition"
-                  onLeftIconButtonTouchTap={() => this.openNav()}
+                  showMenuIconButton={false}
+                  title="User Authentication"
+                  iconElementRight={<FlatButton label="Home" style={{color: '#fff'}} onClick={() => this.dispatchNewRoute('/home')}/>}
+
+                  // onLeftIconButtonTouchTap={() => this.openNav()}
                 />
             </header>
 

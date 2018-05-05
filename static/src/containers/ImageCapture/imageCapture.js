@@ -25,9 +25,10 @@ class ImageCapture extends React.Component{
 			imageText: null,
 			search: null,
       activeStep: '0',
-			image1: null,
-			image2: null,
-			image3: null,
+			image1: "https://clicknathan.com/wp-content/uploads/2013/07/avatar-2.jpg",
+			image2: "https://clicknathan.com/wp-content/uploads/2013/07/avatar-2.jpg",
+			image3: "https://clicknathan.com/wp-content/uploads/2013/07/avatar-2.jpg",
+			image4: "https://clicknathan.com/wp-content/uploads/2013/07/avatar-2.jpg",
 			key: 1
 		}
 	}
@@ -42,36 +43,6 @@ class ImageCapture extends React.Component{
 			this.props.reset()
 		}
 	}
-
-	// takePicture = () => {
-	// 	console.log(this.camera)
-  //   this.camera.capture()
-  //   .then(blob => {
-	// 		let key = this.state.key;
-	// 		let imgKey = 'image' + key;
-	// 		this.setState({
-	// 			[imgKey] : URL.createObjectURL(blob)
-	// 		});
-	// 		this.convertImageFormat(blob)
-  //   })
-  // }
-
-	// convertImageFormat = (blob)=> {
-	// 	let reader = new FileReader();
-	// 	reader.readAsDataURL(blob);
-	// 	var that = this;
-	// 	reader.onloadend = function() {
-  //   	let base64data = reader.result;
-	// 		let key = that.state.key;
-	// 		let userData = that.props.home.userData;
-	// 		let imgKey = 'image' + key;
-	// 		userData[imgKey] = base64data;
-	// 		that.props.saveUserData(userData);
-	// 		that.setState({
-	// 			key: key + 1
-	// 		});
- 	// 	}
-	// }
 
 	capture = () => {
     const imageSrc = this.webcam.getScreenshot();
@@ -88,10 +59,6 @@ class ImageCapture extends React.Component{
 			[imgKey] : imageSrc
 		});
   };
-
-	chooseFile = () => {
-		$("#files").click();
-	}
 
 	onFileLoad = (event )=> {
 		var input = event.target;
@@ -119,7 +86,6 @@ class ImageCapture extends React.Component{
 		const style = {
 		  preview: {
 		    position: 'relative',
-				marginLeft: '35%'
 		  },
 		  captureContainer: {
 		    display: 'flex',
@@ -135,112 +101,47 @@ class ImageCapture extends React.Component{
 		    height: 56,
 		    width: 56,
 		    color: '#000',
-		    margin: 50
-		  },
-		  captureImage: {
-		    width: '100%',
-		  },
-			floatingButton: {
-				float: 'right',
-				marginTop: '-40px'
-			},
-			raisedButton: {
-				width: '50%'
-			},
-			hiddenButton: {
-				height:'0px',
-				overflow:'hidden'
-			},
-			vl: {
-				borderLeft: '1px solid black',
-	 			height: '95px',
-				float: 'right',
-				marginRight: '48%',
-    		marginTop: '-50px'
-			},
-			textUrl: {
-				marginLeft: '45px'
-			},
-			imageText: {
-				marginTop: '70px'
-			}
+		  }
 		};
 
-		const uploadStyle = {
-			height: 100,
-      width: 100,
-      marginLeft: 30,
-			marginTop: 20,
-			float: 'right',
-			marginRight: 50
+		const imgStyle = {			
+			width: '100px',	
+			maxWidth: '100%',
+			height: '100px',
+			maxHeight: '100%',
+			display: 'inline-block',
+			marginLeft: '15px',
 		}
-    const stylePic = {
-      height: 100,
-      width: 100,
-      marginLeft: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
 
-		const imgStyle = {
-			height: 100,
-      width: 100,
-      margin: 15
-		}
 		return (
-      <div>
-          <Divider />
-					{
-						this.state.image1 ?
-						<img  style={imgStyle} src={this.state.image1}/>
-						:
-						<Paper style={stylePic} zDepth={4} />
-					}
-					{
-						this.state.image2 ?
-						<img style={imgStyle} src={this.state.image2}/>
-						:
-						<Paper style={stylePic} zDepth={4} />
-					}
-					{
-						this.state.image3 ?
-						<img style={imgStyle} src={this.state.image3}/>
-						:
-						<Paper style={stylePic} zDepth={4} />
-					}
-					{
-						this.props.imageCount === 5 ?
-						this.state.image4 ?
-						<img style={imgStyle} src={this.state.image2}/>
-						:
-						<Paper style={stylePic} zDepth={4} />
-						: null
-					}
-					{
-						this.props.imageCount === 5 ?
-							<RaisedButton label="Upload" labelPosition="before" onClick={this.chooseFile} style= {uploadStyle}>
-								<input id="files" type="file" style={style.hiddenButton} onChange={this.onFileLoad}/>
-							</RaisedButton>
-						: null
-					}
-				 <div>
-				 <Webcam
-					 style={style.preview}
-					 audio={false}
-					 height={350}
-					 ref={this.setRef}
-					 screenshotFormat="image/jpeg"
-					 width={350}
-					 ref = {
-						 (webcam) => {
-							 this.webcam = webcam;
-						 }
-					 }
-				 />
-				 <div style={style.captureContainer} onClick={this.takePicture}>
-					<button style={style.captureButton} onClick={this.capture}><b>Capture</b></button>
-				 </div>
-			 	</div>
+      <div style={{height: 'calc(100vh - 122px)'}}>
+					<div style={{marginTop: '10px'}}>
+						<img style={imgStyle} alt="Smiley face" src={this.state.image1}/>
+						<img style={imgStyle} alt="Smiley face" src={this.state.image2}/>
+						<img style={imgStyle} alt="Smiley face" src={this.state.image3}/>
+						<img style={imgStyle} alt="Smiley face" src={this.state.image4}/>
+					</div>
+					<div>
+						<center>
+							<Webcam
+								style={style.preview}
+								audio={false}
+								height={ window.innerHeight - 300 }
+								ref={this.setRef}
+								screenshotFormat="image/jpeg"
+								width={350}
+								ref = {
+									(webcam) => {
+										this.webcam = webcam;
+									}
+								}
+							/>
+
+							<p>
+								<button style={style.captureButton} onClick={this.capture}><b>Click</b></button>
+							</p>
+						</center>
+					</div>
       </div>
 		)
 	}

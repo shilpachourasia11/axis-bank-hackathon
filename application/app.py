@@ -75,6 +75,11 @@ def verify_user():
         res = obj.test(audio_file)
         if dir_user==res:
             # ("USER:",dir_user)
+            res = act.getUserData(dir_user, database_path)
+            # (res)
+            return jsonify({'type': 'success', 'message': res})
+        elif dir_user:
+            # ("USER:",dir_user)
             res = act.getUserData(dir_user,database_path)
             # (res)
             return jsonify({'type' : 'success', 'message': res})
