@@ -9,6 +9,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Webcam from 'react-webcam';
 
+import './VoiceVerify.scss';
+
 class VoiceRecorder extends React.Component{
 	constructor(props) {
 		super(props);
@@ -84,7 +86,7 @@ class VoiceRecorder extends React.Component{
 
 	render(){
 		return (
-      <div style={{backgroundColor: '#303030', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
+      <div className="verify_container">
           <center>
             <ReactMic
               record={this.state.record}
@@ -126,19 +128,19 @@ class VoiceRecorder extends React.Component{
 
 						</div>
           </center>
-        <Webcam
-          style={{visibility: 'hidden'}}
-          audio={false}
-          height={350}
-          ref={this.setRef}
-          screenshotFormat="image/jpeg"
-          width={350}
-          ref = {
-            (webcam) => {
-              this.webcam = webcam;
-            }
-          }
-        />
+					<Webcam
+						style={{visibility: 'hidden'}}
+						audio={false}
+						height={350}
+						ref={this.setRef}
+						screenshotFormat="image/jpeg"
+						width={350}
+						ref = {
+							(webcam) => {
+								this.webcam = webcam;
+							}
+						}
+        	/>
       </div>
 		)
 	}
