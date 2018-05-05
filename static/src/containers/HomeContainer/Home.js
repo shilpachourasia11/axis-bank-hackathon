@@ -40,7 +40,7 @@ class Home extends React.Component{
 			this.props.reset();
 		}
 
-		if(this.props.home.error && this.props.type !== 'register'){
+		if(this.props.home.error && this.state.stopRecording === false && this.props.type !== 'register'){
 			this.setState({
 				stopRecording: true
 			});
