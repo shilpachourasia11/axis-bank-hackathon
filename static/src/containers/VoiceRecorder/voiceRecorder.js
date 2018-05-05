@@ -19,7 +19,7 @@ class VoiceRecorder extends React.Component{
 		this.props = props;
     this.state = {
       record: false,
-			value: 1,
+			value: 2,
 			clipNumber: 1
     }
 	}
@@ -122,7 +122,7 @@ class VoiceRecorder extends React.Component{
 			}
 		}
 	}
-	
+
 	render(){
 		let div_height = 'calc(100vh - 184px)';
 		if (this.props.type !== 'register'){
@@ -159,7 +159,14 @@ class VoiceRecorder extends React.Component{
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
             <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
 						<div>
-							<br/><label>Please read the following text for audio clip</label><br/>
+							<br/>
+              {
+                this.state.value === 1 ?
+                <label style={{color: 'white'}}>कृपया ऑडियो क्लिप के लिए निम्न पाठ पढ़ें</label>
+                :
+                <label style={{color: 'white'}}>Please read the following text for audio clip</label>
+              }
+              <br/>
 							<SelectField
 								value={this.state.value}
 								onChange={this.handleChange}

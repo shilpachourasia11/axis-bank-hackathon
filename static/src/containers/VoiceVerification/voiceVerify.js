@@ -17,7 +17,7 @@ class VoiceRecorder extends React.Component{
 		this.props = props;
     this.state = {
       record: false,
-			value: 1,
+			value: 2,
 			clipNumber: 1,
       image1: null,
 			image2: null,
