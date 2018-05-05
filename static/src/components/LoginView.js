@@ -68,7 +68,6 @@ export default class LoginView extends React.Component {
                         </div>
                     </form>
                 </Paper>
-
             </div>
         );
 

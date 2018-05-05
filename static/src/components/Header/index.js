@@ -27,21 +27,13 @@ export class Header extends Component {
       });
     }
 
+    //
+    // handleClickOutside() {
+    //   this.setState({
+    //       open: false,
+    //   });
+    // }
 
-    handleClickOutside() {
-      this.setState({
-          open: false,
-      });
-    }
-
-
-    logout(e) {
-        e.preventDefault();
-        this.props.logoutAndRedirect();
-        this.setState({
-            open: false,
-        });
-    }
 
     openNav() {
         this.setState({
@@ -52,7 +44,7 @@ export class Header extends Component {
     render() {
         return (
             <header>
-                <LeftNav open={this.state.open}>
+                {/* <LeftNav open={this.state.open}>
                     {
                             <div>
                                 <MenuItem onClick={() => this.dispatchNewRoute('/verify')}>
@@ -64,10 +56,13 @@ export class Header extends Component {
                             </div>
 
                     }
-                </LeftNav>
+                </LeftNav> */}
                 <AppBar
+                  showMenuIconButton={false}
                   title="Face-Voice Recognition"
-                  onLeftIconButtonTouchTap={() => this.openNav()}
+                  iconElementRight={<FlatButton label="Home" onClick={() => this.dispatchNewRoute('/home')}/>}
+
+                  // onLeftIconButtonTouchTap={() => this.openNav()}
                 />
             </header>
 
