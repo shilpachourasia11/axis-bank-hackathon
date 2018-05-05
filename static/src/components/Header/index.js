@@ -50,9 +50,9 @@ export class Header extends Component {
 
                     }
                 </LeftNav> */}
-                <AppBar                  
+                <AppBar
                   showMenuIconButton={false}
-                  title="Face-Voice Recognition"
+                  title="User Authentication"
                   iconElementRight={<FlatButton label="Home" style={{color: '#fff'}} onClick={() => this.dispatchNewRoute('/home')}/>}
 
                   // onLeftIconButtonTouchTap={() => this.openNav()}

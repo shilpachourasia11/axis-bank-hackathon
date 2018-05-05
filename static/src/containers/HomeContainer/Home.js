@@ -30,13 +30,21 @@ class Home extends React.Component{
 				value: "0"
 			});
 		}
+		this.props = nextProps;
 
-		if(this.props.home.success === true){
+		if(this.props.home.verified){
+			this.setState({
+				stopRecording: true,
+				value: "2"
+			});
+			this.props.reset();
+		}
+
+		if(this.props.home.error && this.props.type !== 'register'){
 			this.setState({
 				stopRecording: true
 			});
 		}
-		this.props = nextProps;
 	}
 
 	resetRecorder = () => {

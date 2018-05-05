@@ -15,7 +15,8 @@ const initialState = {
     message: "",
     userData: {},
     success: false,
-    verifiedData: {}
+    verifiedData: {},
+    verified: false
 };
 
 export default createReducer(initialState, {
@@ -54,7 +55,8 @@ export default createReducer(initialState, {
       else{
         return Object.assign({}, state, {
           error: false,
-          verifiedData: JSON.parse(payload.message)
+          verifiedData: JSON.parse(payload.message),
+          verified: true
         });
       }
     },
@@ -65,6 +67,7 @@ export default createReducer(initialState, {
     [RESET]: (state, payload) =>
         Object.assign({}, state, {
             error: false,
-            success: false
+            success: false,
+            verified: false
         }),
 });
