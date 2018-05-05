@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
-import { ReactMic } from 'react-mic';
+import Recorder from 'react-recorder'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Webcam from 'react-webcam';
@@ -19,23 +19,21 @@ class VoiceRecorder extends React.Component{
 			clipNumber: 1,
       image1: null,
 			image2: null,
-			image3: null,
       key: 1
     }
 	}
 
-  startRecording = () => {
+  startRecording = (recordedBlob) => {
     this.setState({
       record: true
     });
-    this.capture();
+		this.capture();
   }
 
   stopRecording = () => {
     this.setState({
       record: false
     });
-    this.capture();
   }
 
   onStop = (recordedBlob)  => {
@@ -43,7 +41,6 @@ class VoiceRecorder extends React.Component{
 			recordedBlob
 		});
 		this.convertClipFormat(recordedBlob);
-    this.capture();
   }
 
 	convertClipFormat = (blob)=> {
@@ -51,14 +48,11 @@ class VoiceRecorder extends React.Component{
 		reader.readAsDataURL(blob.blob);
 		var that = this;
 		reader.onloadend = function() {
-			let clipNumber = that.state.clipNumber;
     	let base64data = reader.result;
 			let userData = that.props.home.userData;
-			userData['audioClip' + clipNumber] = base64data;
+			userData['audioClip1'] = base64data;
 			that.props.saveUserData(userData);
-			that.setState({
-				clipNumber: (clipNumber+1)
-			});
+			this.props.verify(this.props.home.userData);
  		}
 	}
 
@@ -81,21 +75,15 @@ class VoiceRecorder extends React.Component{
 
 		this.setState({
 			[imgKey] : imageSrc
-		}, () => {
-      console.log(this.state)
-    });
+		});
   };
 
 	render(){
 		return (
       <div style={{backgroundColor: '#303030', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
           <center>
-            <ReactMic
-              record={this.state.record}
-              className="sound-wave"
-              onStop={this.onStop}
-              strokeColor="#000000"
-              backgroundColor="#FF4081" />
+						<Recorder onStop={this.startRecording} />
+
               <br/>
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
             <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
@@ -111,11 +99,11 @@ class VoiceRecorder extends React.Component{
 								{
 									this.state.value === 1 ?
 									<p style={{color: 'white'}}>
-										यदि आप दोस्तों की तलाश में जाते हैं, तो आप पाएंगे कि वे बहुत दुर्लभ हैं। यदि आप एक दोस्त बनने के लिए बाहर जाते हैं, तो आप उन्हें हर जगह पाएंगे।
+										अपने जीवन के पहले भाग के दौरान, जब आप इसे खो देते हैं तो आप केवल खुशी के बारे में जागरूक हो जाते हैं। फिर एक उम्र आती है, एक दूसरा, जिसमें आप पहले ही जानते हैं, इस समय जब आप सच्ची खुशी का अनुभव करना शुरू करते हैं, तो आप दिन के अंत में इसे खोने जा रहे हैं। जब मैं बेले से मिला, तो मुझे समझ में आया कि मैंने अभी इस दूसरी उम्र में प्रवेश किया था। मुझे यह भी समझा गया कि मैं तीसरी उम्र तक नहीं पहुंचा था, जिसमें खुशी के नुकसान की प्रत्याशा आपको जीवित रहने से रोकती है।
 									</p>
 									:
 									<p style={{color: 'white'}}>
-										If you go out looking for friends, you're going to find they are very scarce. If you go out to be a friend, you'll find them everywhere.
+										During the first part of your life, you only become aware of happiness once you have lost it. Then an age comes, a second one, in which you already know, at the moment when you begin to experience true happiness, that you are, at the end of the day, going to lose it. When I met Belle, I understood that I had just entered this second age. I also understood that I hadn’t reached the third age, in which anticipation of the loss of happiness prevents you from living.
 									</p>
 								}
 
