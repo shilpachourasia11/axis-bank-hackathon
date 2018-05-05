@@ -102,13 +102,7 @@ class VerifyScreen extends React.Component{
 					}
 				}
 				else{
-					if(imageCount < 2){
-						this.setState({
-							popup: true,
-							message: "Please capture atleast 2 images"
-						});
-					}
-					else if(audoCount === 0){
+					if(audoCount === 0){
 						this.setState({
 							popup: true,
 							message: "Please record atleast 1 audio clip"

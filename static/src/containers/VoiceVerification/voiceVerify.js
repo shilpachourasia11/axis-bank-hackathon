@@ -1,10 +1,10 @@
 import React from 'react';
-import { saveUserData, reset } from "./../../actions/homeActions";
+import { saveUserData, reset, verify } from "./../../actions/homeActions";
 import {connect} from "react-redux";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
-import Recorder from 'react-recorder'
+import { ReactMic } from 'react-mic';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Webcam from 'react-webcam';
@@ -36,23 +36,27 @@ class VoiceRecorder extends React.Component{
     });
   }
 
+	stream = (recordedBlob) => {
+		this.convertClipFormat(recordedBlob);
+	}
+
   onStop = (recordedBlob)  => {
 		this.setState({
 			recordedBlob
 		});
-		this.convertClipFormat(recordedBlob);
+		//this.convertClipFormat(recordedBlob);
   }
 
 	convertClipFormat = (blob)=> {
 		let reader = new FileReader();
-		reader.readAsDataURL(blob.blob);
+		reader.readAsDataURL(blob.blob ? blob.blob : blob);
 		var that = this;
 		reader.onloadend = function() {
     	let base64data = reader.result;
 			let userData = that.props.home.userData;
 			userData['audioClip1'] = base64data;
 			that.props.saveUserData(userData);
-			this.props.verify(this.props.home.userData);
+			that.props.verify(that.props.home.userData);
  		}
 	}
 
@@ -82,13 +86,26 @@ class VoiceRecorder extends React.Component{
 		return (
       <div style={{backgroundColor: '#303030', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
           <center>
-						<Recorder onStop={this.startRecording} />
-
-              <br/>
+            <ReactMic
+              record={this.state.record}
+              className="sound-wave"
+              onStop={this.onStop}
+							onData={this.stream}
+              strokeColor="#000000"
+              backgroundColor="#FF4081" />
+            <br/>
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
-            <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
+            {/* <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton> */}
 						<div>
-							<br/><label style={{color: 'white'}}>Please read the following text for audio clip</label><br/>
+							<br/>
+								{
+									this.state.value === 1 ?
+									<label style={{color: 'white'}}>कृपया ऑडियो क्लिप के लिए निम्न पाठ पढ़ें</label>
+									:
+									<label style={{color: 'white'}}>Please read the following text for audio clip</label>
+								}
+
+							<br/>
 							<SelectField
 								value={this.state.value}
 								onChange={this.handleChange}
@@ -142,6 +159,9 @@ const mapDispatchToProps= (dispatch) => {
 		reset: () => {
 			dispatch(reset())
 		},
+		verify: (data) => {
+			dispatch(verify(data))
+		}
   }
 };
 

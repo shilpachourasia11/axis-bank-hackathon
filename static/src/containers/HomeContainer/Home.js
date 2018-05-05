@@ -45,31 +45,6 @@ class Home extends React.Component{
 			value: value,
 		});
 		this.props.reset();
-		if(value === "2"){
-			if(Object.keys(this.props.home.userData).length === 0){
-				return;
-			}
-			if(this.props.type !== 'register'){
-				let data = this.props.home.userData;
-				let imageCount = 0;
-				let audoCount = 0;
-				Object.keys(data).map((key, index)=>{
-					if(key === 'image1'){
-						imageCount++;
-					}
-					if(key === 'image2'){
-						imageCount++;
-					}
-					if(key === 'audioClip1'){
-						audoCount ++;
-					}
-				})
-
-				if(imageCount >= 2 && audoCount > 0){
-					this.props.verify(this.props.home.userData);
-				}
-			}
-		}
   };
 
 	render(){
