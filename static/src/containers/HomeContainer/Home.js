@@ -32,6 +32,14 @@ class Home extends React.Component{
 		this.props = nextProps;
 	}
 
+	componentWillMount(){
+		if(this.props.type === 'register'){
+			this.setState({
+				value: "0"
+			});
+		}
+	}
+
 	handleChange = (value) => {
 		this.setState({
 			value: value,

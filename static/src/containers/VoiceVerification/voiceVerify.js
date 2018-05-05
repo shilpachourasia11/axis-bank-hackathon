@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper';
 import { ReactMic } from 'react-mic';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Webcam from 'react-webcam';
 
 class VoiceRecorder extends React.Component{
 	constructor(props) {
@@ -15,7 +16,11 @@ class VoiceRecorder extends React.Component{
     this.state = {
       record: false,
 			value: 1,
-			clipNumber: 1
+			clipNumber: 1,
+      image1: null,
+			image2: null,
+			image3: null,
+      key: 1
     }
 	}
 
@@ -23,18 +28,14 @@ class VoiceRecorder extends React.Component{
     this.setState({
       record: true
     });
+    this.capture();
   }
 
   stopRecording = () => {
     this.setState({
       record: false
     });
-  }
-
-  onData = (recordedBlob) => {
-		this.setState({
-			recordedBlob
-		});
+    this.capture();
   }
 
   onStop = (recordedBlob)  => {
@@ -42,6 +43,7 @@ class VoiceRecorder extends React.Component{
 			recordedBlob
 		});
 		this.convertClipFormat(recordedBlob);
+    this.capture();
   }
 
 	convertClipFormat = (blob)=> {
@@ -66,10 +68,27 @@ class VoiceRecorder extends React.Component{
 
 	handleChange = (event, index, value) => this.setState({value});
 
+  capture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+		let key = this.state.key;
+		let imgKey = 'image' + key;
+		let userData = this.props.home.userData;
+		userData[imgKey] = imageSrc;
+		this.props.saveUserData(userData);
+		this.setState({
+			key: key + 1
+		});
+
+		this.setState({
+			[imgKey] : imageSrc
+		}, () => {
+      console.log(this.state)
+    });
+  };
+
 	render(){
 		return (
-      <div style={{backgroundColor: '#303030'}}>
-        <Paper zDepth={2} style={{height: '100%', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
+      <div style={{backgroundColor: '#303030', paddingTop: '100px', paddingLeft: '100px', paddingRight: '100px'}}>
           <center>
             <ReactMic
               record={this.state.record}
@@ -81,7 +100,7 @@ class VoiceRecorder extends React.Component{
             <RaisedButton onTouchTap={this.startRecording} type="button">Start</RaisedButton>
             <RaisedButton onTouchTap={this.stopRecording} type="button">Stop</RaisedButton>
 						<div>
-							<br/><label>Please read the following text for audio clip</label><br/>
+							<br/><label style={{color: 'white'}}>Please read the following text for audio clip</label><br/>
 							<SelectField
 								value={this.state.value}
 								onChange={this.handleChange}
@@ -91,18 +110,30 @@ class VoiceRecorder extends React.Component{
 								</SelectField>
 								{
 									this.state.value === 1 ?
-									<p>
+									<p style={{color: 'white'}}>
 										यदि आप दोस्तों की तलाश में जाते हैं, तो आप पाएंगे कि वे बहुत दुर्लभ हैं। यदि आप एक दोस्त बनने के लिए बाहर जाते हैं, तो आप उन्हें हर जगह पाएंगे।
 									</p>
 									:
-									<p>
+									<p style={{color: 'white'}}>
 										If you go out looking for friends, you're going to find they are very scarce. If you go out to be a friend, you'll find them everywhere.
 									</p>
 								}
 
 						</div>
           </center>
-        </Paper>
+        <Webcam
+          style={{visibility: 'hidden'}}
+          audio={false}
+          height={350}
+          ref={this.setRef}
+          screenshotFormat="image/jpeg"
+          width={350}
+          ref = {
+            (webcam) => {
+              this.webcam = webcam;
+            }
+          }
+        />
       </div>
 		)
 	}

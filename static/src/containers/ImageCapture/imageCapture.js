@@ -60,10 +60,6 @@ class ImageCapture extends React.Component{
 		});
   };
 
-	chooseFile = () => {
-		$("#files").click();
-	}
-
 	onFileLoad = (event )=> {
 		var input = event.target;
 		var reader = new FileReader();
@@ -122,14 +118,6 @@ class ImageCapture extends React.Component{
 						<img style={imgStyle} alt="Smiley face" src={this.state.image2}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image3}/>
 						<img style={imgStyle} alt="Smiley face" src={this.state.image4}/>
-
-						{
-							// this.props.imageCount === 5 ?
-							// <RaisedButton label="Upload" labelPosition="before" onClick={this.chooseFile} style= {uploadStyle}>
-							// 	<input id="files" type="file" style={style.hiddenButton} onChange={this.onFileLoad}/>
-							// </RaisedButton>
-							// : null
-						}
 					</div>
 					<div>
 						<center>
